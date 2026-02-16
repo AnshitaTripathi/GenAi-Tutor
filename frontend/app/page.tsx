@@ -1,65 +1,150 @@
-import Image from "next/image";
+'use client';
+
+import { useState } from 'react';
+import { api } from '@/services/api';
 
 export default function Home() {
+  const [name, setName] = useState('');
+  const [level, setLevel] = useState<'beginner' | 'intermediate' | 'advanced'>('beginner');
+  const [greeting, setGreeting] = useState('');
+  const [topic, setTopic] = useState('');
+  const [explanation, setExplanation] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
+
+  const handleGreeting = async () => {
+    if (!name) return;
+    setLoading(true);
+    try {
+      const res = await api.getGreeting({ student_name: name, level });
+      setGreeting(res.greeting);
+    } catch (err) {
+      alert('Error! Is backend running?');
+    }
+    setLoading(false);
+  };
+  
+  const handleExplain = async () => {
+    if (!topic) return;
+    setLoading(true);
+    try {
+      const res = await api.explainTopic({ topic, level, learning_style: 'visual' });
+      setExplanation(res);
+    } catch (err) {
+      alert('Error! Is backend running?');
+    }
+    setLoading(false);
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <main className="min-h-screen p-8 bg-gradient-to-br from-purple-50 via-blue-50 to-green-50">
+      <div className="max-w-5xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h1 className="text-5xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-4">
+            🤖 GenAI Tutor
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="text-xl text-gray-600">
+            Powered by FREE Groq AI (Llama 3.1 70B) 🚀
           </p>
+          <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-green-100 text-green-800 rounded-full text-sm font-semibold">
+            <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+            100% FREE • No Credit Card • No Limits
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+
+        {/* Level Selector */}
+        <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
+          <label className="block text-sm font-semibold mb-3">Select Your Level:</label>
+          <div className="grid grid-cols-3 gap-4">
+            {(['beginner', 'intermediate', 'advanced'] as const).map((lvl) => (
+              <button
+                key={lvl}
+                onClick={() => setLevel(lvl)}
+                className={`p-4 rounded-lg border-2 transition-all ${
+                  level === lvl
+                    ? 'border-blue-500 bg-blue-50 shadow-md'
+                    : 'border-gray-200 hover:border-blue-300'
+                }`}
+              >
+                <div className="font-bold capitalize">{lvl}</div>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Greeting Section */}
+        <div className="bg-white rounded-xl shadow-lg p-8 mb-6">
+          <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
+            👋 Get AI Greeting
+          </h2>
+          <div className="space-y-4">
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Enter your name..."
+              className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-blue-500 outline-none"
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            <button
+              onClick={handleGreeting}
+              disabled={loading || !name}
+              className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 rounded-lg font-semibold hover:shadow-lg transition disabled:opacity-50"
+            >
+              {loading ? '🤔 AI is thinking...' : '✨ Generate Greeting'}
+            </button>
+            {greeting && (
+              <div className="mt-4 p-6 bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg border-2 border-purple-200">
+                <p className="text-lg leading-relaxed">{greeting}</p>
+              </div>
+            )}
+          </div>
         </div>
-      </main>
-    </div>
+
+        {/* Topic Explanation */}
+        <div className="bg-white rounded-xl shadow-lg p-8">
+          <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
+            📚 Explain Any Topic
+          </h2>
+          <div className="space-y-4">
+            <input
+              type="text"
+              value={topic}
+              onChange={(e) => setTopic(e.target.value)}
+              placeholder="e.g., arrays, linked lists, binary search..."
+              className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-green-500 outline-none"
+            />
+            <button
+              onClick={handleExplain}
+              disabled={loading || !topic}
+              className="w-full bg-gradient-to-r from-green-600 to-teal-600 text-white py-3 rounded-lg font-semibold hover:shadow-lg transition disabled:opacity-50"
+            >
+              {loading ? '🧠 AI is generating...' : '🚀 Explain Topic'}
+            </button>
+            {explanation && (
+              <div className="mt-6 space-y-4">
+                <div className="flex items-center justify-between text-sm text-gray-600">
+                  <span>📖 {explanation.word_count} words</span>
+                  <span>⏱️ {explanation.estimated_reading_time} min read</span>
+                  <span>🤖 {explanation.model_used}</span>
+                </div>
+                <div className="p-6 bg-gradient-to-r from-green-50 to-teal-50 rounded-lg border-2 border-green-200">
+                  <div className="prose max-w-none">
+                    <div className="whitespace-pre-wrap leading-relaxed">
+                      {explanation.explanation}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="mt-12 text-center text-gray-500 text-sm">
+          <p>Built with ❤️ using FastAPI, Next.js, and FREE Groq AI</p>
+          <p className="mt-2">No API costs • Perfect for learning • Unlimited potential</p>
+        </div>
+      </div>
+    </main>
   );
 }
