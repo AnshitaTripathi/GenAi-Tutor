@@ -1,27 +1,41 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from .config import settings
+from .routes import learning
 
-# Create the FastAPI app
-app = FastAPI(title="GenAI Tutor API", version="1.0.0")
+# Create app
+app = FastAPI(
+    title=f"{settings.app_name} API",
+    version="1.0.0",
+    description="FREE AI-powered tutoring platform using Groq (Llama 3)"
+)
 
-# Allow frontend to talk to backend (CORS)
+# CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # Frontend URL
+    allow_origins=[settings.frontend_url],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Our first API endpoint - a simple test
+# Include routes
+app.include_router(learning.router)
+
 @app.get("/")
-def read_root():
+def root():
     return {
-        "message": "Welcome to GenAI Tutor API!",
-        "status": "running"
+        "message": f"Welcome to {settings.app_name}!",
+        "status": "running",
+        "ai_provider": "Groq (FREE)",
+        "model": "Llama 3.1 70B",
+        "docs": "/docs"
     }
 
-# Health check endpoint
 @app.get("/health")
-def health_check():
-    return {"status": "healthy"}
+def health():
+    return {
+        "status": "healthy",
+        "ai_configured": bool(settings.groq_api_key),
+        "free_tier": True
+    }
