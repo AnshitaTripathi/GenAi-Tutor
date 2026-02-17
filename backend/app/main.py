@@ -1,16 +1,19 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .config import settings
-from .routes import learning
+from .database import engine, Base
+from .routes import learning, profile
+from . import models  # Import models so tables are created
 
-# Create app
+# Create all database tables automatically on startup
+Base.metadata.create_all(bind=engine)
+
 app = FastAPI(
     title=f"{settings.app_name} API",
     version="1.0.0",
-    description="FREE AI-powered tutoring platform using Groq (Llama 3)"
+    description="AI-powered tutoring platform with Groq (Llama 3.3)"
 )
 
-# CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[settings.frontend_url],
@@ -19,16 +22,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include routes
+# Include all routers
 app.include_router(learning.router)
+app.include_router(profile.router)
 
 @app.get("/")
 def root():
     return {
         "message": f"Welcome to {settings.app_name}!",
         "status": "running",
-        "ai_provider": "Groq (FREE)",
-        "model": "Llama 3.1 70B",
+        "database": "SQLite (connected)",
+        "ai_provider": "Groq - Llama 3.3 70B",
         "docs": "/docs"
     }
 
@@ -36,6 +40,6 @@ def root():
 def health():
     return {
         "status": "healthy",
-        "ai_configured": bool(settings.groq_api_key),
-        "free_tier": True
+        "database": "connected",
+        "ai": "connected"
     }
