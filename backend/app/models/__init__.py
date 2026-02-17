@@ -1,0 +1,4 @@
+# Import all models so they're registered with SQLAlchemy
+from .user import User
+from .profile import StudentProfile
+from .session import LearningSession
