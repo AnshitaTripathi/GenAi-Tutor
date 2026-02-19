@@ -2,8 +2,15 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .config import settings
 from .database import engine, Base
-from .routes import learning, profile
 from . import models  # Import models so tables are created
+from .models import quiz
+from .database import engine, Base
+from .routes import learning, profile, quiz
+from . import models  # This imports all models
+from .models import User, StudentProfile, LearningSession, QuizSession, QuizQuestion  # Explicit imports
+
+# Create all tables
+Base.metadata.create_all(bind=engine)
 
 # Create all database tables automatically on startup
 Base.metadata.create_all(bind=engine)
@@ -25,6 +32,7 @@ app.add_middleware(
 # Include all routers
 app.include_router(learning.router)
 app.include_router(profile.router)
+app.include_router(quiz.router)
 
 @app.get("/")
 def root():
