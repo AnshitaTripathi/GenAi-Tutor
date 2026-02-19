@@ -1,6 +1,6 @@
 # 🎓 GenAI Tutor
 
-An AI-powered personalized tutoring platform that adapts to student proficiency levels, provides interactive learning experiences, and tracks progress with detailed session history.
+An AI-powered personalized tutoring platform that adapts to student proficiency levels, generates interactive quizzes, and tracks learning progress with detailed analytics.
 
 > 🚧 **Active Development** — Built step by step as a learning project. Star ⭐ the repo to follow progress!
 
@@ -8,20 +8,30 @@ An AI-powered personalized tutoring platform that adapts to student proficiency 
 
 ## 🌟 Features (Current)
 
-- **Student Profile System** — Multi-step onboarding with username, level, and learning style
+### ✅ Completed Features
+
+- **Student Profile System** — Multi-step onboarding with username, level, and learning style preferences
 - **Adaptive AI Explanations** — Real-time topic explanations tailored to beginner, intermediate, and advanced levels
 - **Personalized Greetings** — AI-generated welcome messages based on student profile
-- **Learning History** — Every studied topic is saved and displayed on the dashboard
+- **Learning History** — Every studied topic is saved and displayed on the dashboard with timestamps
 - **Session Tracking** — Tracks total sessions and topics studied per student
 - **Practice Questions** — AI-generated questions with hints for any topic
-- **Persistent Profiles** — Profiles saved to database and remembered across sessions
+- **Quiz System** — Complete quiz functionality with:
+  - AI-generated multiple choice questions (5 questions per quiz)
+  - Adaptive difficulty based on student level
+  - Timer-based quiz sessions (5 minutes)
+  - Automatic grading and scoring
+  - Detailed answer explanations
+  - Performance breakdown by difficulty (easy/medium/hard)
+  - Quiz history and results tracking
+- **Persistent Profiles** — Profiles and learning data saved to database and remembered across sessions
 
-## 🔮 Features (Coming Soon)
+### 🔮 Features (Coming Soon)
 
-- **Quiz System** — Auto-generated multiple choice quizzes with scoring
-- **Data Structure Visualizations** — Interactive memory diagrams
+- **Data Structure Visualizations** — Interactive memory diagrams for arrays, linked lists, trees
 - **Analytics Dashboard** — Charts for progress tracking and weak area identification
 - **User Authentication** — Secure login with JWT tokens
+- **Spaced Repetition** — Smart review system for optimal learning
 - **Deployment** — Live URL via Vercel and Railway
 
 ---
@@ -128,15 +138,32 @@ Once the backend is running, visit:
 
 ### Available Endpoints
 
+#### Learning Endpoints
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/learning/greeting` | Generate personalized greeting |
+| `POST` | `/api/learning/explain` | Get AI explanation for any topic |
+| `POST` | `/api/learning/practice` | Generate practice questions |
+
+#### Profile Endpoints
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | `POST` | `/api/profile/create` | Create new student profile |
 | `GET` | `/api/profile/{username}` | Get profile and learning history |
 | `PUT` | `/api/profile/{username}/update` | Update level or learning style |
 | `GET` | `/api/profile/{username}/history` | Get all learning sessions |
-| `POST` | `/api/learning/greeting` | Generate personalized greeting |
-| `POST` | `/api/learning/explain` | Get AI explanation for any topic |
-| `POST` | `/api/learning/practice` | Generate practice questions |
+
+#### Quiz Endpoints
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/quiz/generate` | Generate new quiz for a topic |
+| `POST` | `/api/quiz/submit` | Submit quiz answers and get score |
+| `GET` | `/api/quiz/{username}/history` | Get quiz history and results |
+
+#### System Endpoints
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/` | Root endpoint with API info |
 | `GET` | `/health` | API health check |
 
 ---
@@ -155,22 +182,26 @@ genai-tutor/
 │   │   ├── models/                  # Database table definitions
 │   │   │   ├── user.py              # User model
 │   │   │   ├── profile.py           # StudentProfile model
-│   │   │   └── session.py           # LearningSession model
+│   │   │   ├── session.py           # LearningSession model
+│   │   │   └── quiz.py              # QuizSession and QuizQuestion models
 │   │   │
 │   │   ├── routes/                  # API endpoint handlers
 │   │   │   ├── learning.py          # Learning and explanation routes
-│   │   │   └── profile.py           # Profile management routes
+│   │   │   ├── profile.py           # Profile management routes
+│   │   │   └── quiz.py              # Quiz generation and submission routes
 │   │   │
 │   │   ├── schemas/                 # Pydantic request/response models
 │   │   │   ├── learning.py          # Learning schemas
-│   │   │   └── profile.py           # Profile schemas
+│   │   │   ├── profile.py           # Profile schemas
+│   │   │   └── quiz.py              # Quiz schemas
 │   │   │
 │   │   └── services/                # Business logic
 │   │       └── ai_service.py        # Groq AI integration
 │   │
 │   ├── requirements.txt             # Python dependencies
 │   ├── .env.example                 # Environment variables template
-│   └── .gitignore                   # Python gitignore rules
+│   ├── .gitignore                   # Python gitignore rules
+│   └── genai_tutor.db               # SQLite database (auto-created)
 │
 ├── frontend/
 │   ├── app/
@@ -180,8 +211,12 @@ genai-tutor/
 │   │
 │   └── src/
 │       ├── components/
-│       │   └── ProfileSetup/
-│       │       └── index.tsx        # 3-step profile setup wizard
+│       │   ├── ProfileSetup/
+│       │   │   └── index.tsx        # 3-step profile setup wizard
+│       │   ├── QuizPlayer/
+│       │   │   └── index.tsx        # Quiz taking interface
+│       │   └── QuizResults/
+│       │       └── index.tsx        # Quiz results and review
 │       └── services/
 │           └── api.ts               # Type-safe API client
 │
@@ -220,6 +255,7 @@ NEXT_PUBLIC_API_URL=http://localhost:8000
 
 ## 🗄️ Database Schema
 
+### Users Table
 ```
 users
 ├── id (UUID, Primary Key)
@@ -227,7 +263,10 @@ users
 ├── email (Unique)
 ├── is_active
 └── created_at, updated_at
+```
 
+### Student Profiles Table
+```
 student_profiles
 ├── id (UUID, Primary Key)
 ├── user_id (FK → users)
@@ -236,7 +275,10 @@ student_profiles
 ├── preferred_topics (JSON Array)
 ├── total_sessions
 └── created_at, updated_at
+```
 
+### Learning Sessions Table
+```
 learning_sessions
 ├── id (UUID, Primary Key)
 ├── user_id (FK → users)
@@ -246,6 +288,37 @@ learning_sessions
 ├── word_count
 ├── estimated_reading_time
 └── created_at
+```
+
+### Quiz Sessions Table
+```
+quiz_sessions
+├── id (UUID, Primary Key)
+├── user_id (FK → users)
+├── topic
+├── level
+├── total_questions
+├── correct_answers
+├── score (percentage)
+├── time_taken (seconds)
+├── completed
+└── started_at, completed_at
+```
+
+### Quiz Questions Table
+```
+quiz_questions
+├── id (UUID, Primary Key)
+├── quiz_session_id (FK → quiz_sessions)
+├── question_number
+├── question_text
+├── options (JSON: A, B, C, D)
+├── correct_answer
+├── user_answer
+├── is_correct
+├── difficulty (easy/medium/hard)
+├── concept
+└── explanation
 ```
 
 ---
@@ -291,10 +364,19 @@ npm run dev
   - [x] 3-step profile setup wizard (UI)
   - [x] Learning dashboard with stats
   - [x] Session persistence and history tracking
+- [x] **Step 4** — Quiz system with AI-generated questions
+  - [x] QuizSession and QuizQuestion models
+  - [x] AI-powered quiz generation with adaptive difficulty
+  - [x] Multiple choice questions (4 options per question)
+  - [x] Quiz submission and automatic grading
+  - [x] Score calculation with performance breakdown
+  - [x] Answer explanations for learning
+  - [x] Quiz history and results tracking
+  - [x] Quiz player UI with timer
+  - [x] Quiz results UI with detailed review
 
 ### 🔲 In Progress / Coming Next
 
-- [ ] **Step 4** — Quiz system with scoring and results
 - [ ] **Step 5** — Interactive data structure visualizations
 - [ ] **Step 6** — Analytics dashboard with charts
 - [ ] **Step 7** — User authentication (JWT)
@@ -310,6 +392,26 @@ npm run dev
 | SQLite (development) | **$0.00** |
 | Next.js (Vercel — coming soon) | **$0.00** |
 | **Total** | **$0.00** 🎉 |
+
+---
+
+## 🎯 Key Features Showcase
+
+### Quiz System
+- **Adaptive Difficulty**: Questions adjust based on student level (beginner/intermediate/advanced)
+- **Multiple Choice**: 4 options per question with only one correct answer
+- **Timer**: 5-minute countdown with auto-submit
+- **Instant Grading**: Automatic scoring with percentage calculation
+- **Performance Analytics**: Breakdown by difficulty (easy/medium/hard)
+- **Learning-Focused**: Detailed explanations for every answer
+- **Progress Tracking**: Complete quiz history saved to database
+
+### Learning Experience
+- **Personalized**: Content adapts to individual student level
+- **Comprehensive**: Explanations include analogies, examples, and key takeaways
+- **Interactive**: Practice questions with hints
+- **Tracked**: Every session saved with timestamps and metadata
+- **Visual**: Clean, modern UI with progress indicators
 
 ---
 
@@ -337,3 +439,7 @@ MIT License — feel free to use this project for learning purposes.
 - AI orchestration by [LangChain](https://langchain.com/)
 - Free AI inference by [Groq](https://groq.com/)
 - Framework by [FastAPI](https://fastapi.tiangolo.com/) and [Next.js](https://nextjs.org/)
+
+---
+
+**Note**: This project is under active development. More features coming soon! Star ⭐ the repo to follow progress!
