@@ -24,18 +24,18 @@ class User(Base):
     # Columns (fields in the table)
     id = Column(
         String,
-        primary_key=True,           # Unique identifier
-        default=lambda: str(uuid.uuid4())  # Auto-generate UUID
+        primary_key=True,
+        default=lambda: str(uuid.uuid4())
     )
     username = Column(
         String(100),
-        unique=True,                # No two users same username
-        nullable=False,             # Required field
-        index=True                  # Makes searches faster
+        unique=True,
+        nullable=False,
+        index=True
     )
     email = Column(
         String(255),
-        unique=True,                # No two users same email
+        unique=True,
         nullable=False
     )
     is_active = Column(
@@ -44,23 +44,24 @@ class User(Base):
     )
     created_at = Column(
         DateTime(timezone=True),
-        server_default=func.now()   # Automatically set to current time
+        server_default=func.now()
     )
     updated_at = Column(
         DateTime(timezone=True),
-        onupdate=func.now()         # Update whenever record changes
+        onupdate=func.now()
     )
     
     # Relationships (links to other tables)
     profile = relationship(
         "StudentProfile",
         back_populates="user",
-        uselist=False               # One-to-one (one user, one profile)
+        uselist=False
     )
     learning_sessions = relationship(
         "LearningSession",
-        back_populates="user"       # One-to-many (one user, many sessions)
+        back_populates="user"
     )
+    # No quiz_sessions relationship - not needed!
     
     def __repr__(self):
         return f"<User(username={self.username}, email={self.email})>"
