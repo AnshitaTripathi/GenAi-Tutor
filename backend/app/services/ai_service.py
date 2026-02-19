@@ -1,13 +1,13 @@
 from langchain_groq import ChatGroq
 from langchain_core.prompts import ChatPromptTemplate
-
 from langchain_core.output_parsers import StrOutputParser
-
 from ..config import settings
+import json
+import re
 
 class AITutorService:
     """
-    FREE AI Tutor Service using Groq (Llama 3)
+    FREE AI Tutor Service using Groq (Llama 3.3)
     
     Cost: $0.00 - Completely FREE!
     Speed: 1-2 seconds per response
@@ -18,12 +18,13 @@ class AITutorService:
         # Initialize Groq with FREE API
         self.llm = ChatGroq(
             groq_api_key=settings.groq_api_key,
-            model_name="Llama-3.3-70B-versatile",  # Best free model!
-            temperature=0.7,  # Creativity level (0-1)
-            max_tokens=1000,  # Response length
+            model_name="llama-3.3-70b-versatile",
+            temperature=0.7,
+            max_tokens=1000,
         )
         
-        print(" AI Service initialized with Groq (FREE!)")
+        print("✅ AI Service initialized with Groq (FREE!)")
+        print("   Model: Llama 3.3 70B Versatile")
     
     async def generate_greeting(self, student_name: str, level: str) -> str:
         """
@@ -54,10 +55,8 @@ class AITutorService:
             ("user", "Generate a greeting for {name}")
         ])
         
-        # Create chain: prompt → AI → text output
         chain = prompt | self.llm | StrOutputParser()
         
-        # Execute
         result = await chain.ainvoke({
             "name": student_name,
             "level": level
@@ -83,7 +82,6 @@ class AITutorService:
             Dictionary with explanation and metadata
         """
         
-        # Customize prompt based on level
         if level == "beginner":
             complexity = "Use very simple language. Start with a real-world analogy. Avoid jargon."
         elif level == "intermediate":
@@ -123,7 +121,6 @@ class AITutorService:
             "complexity": complexity
         })
         
-        # Calculate reading time (average 200 words/minute)
         word_count = len(explanation.split())
         reading_time = max(1, word_count // 200)
         
@@ -133,7 +130,7 @@ class AITutorService:
             "explanation": explanation,
             "word_count": word_count,
             "estimated_reading_time": reading_time,
-            "model_used": "Llama 3.1 70B (FREE)"
+            "model_used": "Llama 3.3 70B (FREE)"
         }
     
     async def generate_practice_questions(
@@ -141,7 +138,7 @@ class AITutorService:
         topic: str,
         level: str,
         num_questions: int = 3
-    ) -> list:
+    ) -> dict:
         """
         Generate practice questions for a topic.
         
@@ -151,7 +148,7 @@ class AITutorService:
             num_questions: How many questions (default 3)
             
         Returns:
-            List of practice questions with hints
+            Dictionary with questions
         """
         
         prompt = ChatPromptTemplate.from_messages([
@@ -183,6 +180,116 @@ class AITutorService:
             "questions": result,
             "count": num_questions
         }
+    
+    async def generate_quiz(
+        self,
+        topic: str,
+        level: str,
+        num_questions: int = 5
+    ) -> list:
+        """
+        Generate a quiz with multiple choice questions.
+        
+        Args:
+            topic: What to test on
+            level: Student proficiency level
+            num_questions: How many questions (default 5)
+            
+        Returns:
+            List of question dictionaries
+        """
+        
+        # Adjust difficulty distribution based on level
+        if level == "beginner":
+            difficulty_mix = "60% easy, 30% medium, 10% hard"
+        elif level == "intermediate":
+            difficulty_mix = "20% easy, 60% medium, 20% hard"
+        else:  # advanced
+            difficulty_mix = "10% easy, 30% medium, 60% hard"
+        
+        prompt = ChatPromptTemplate.from_messages([
+            ("system", """You are an expert quiz generator for computer science topics.
+
+Generate {num_questions} multiple choice questions about {topic} for a {level} level student.
+
+CRITICAL: Return ONLY a valid JSON object. No markdown, no explanations, no extra text.
+
+Format:
+{{
+  "questions": [
+    {{
+      "question_number": 1,
+      "question_text": "What is the time complexity of binary search?",
+      "options": {{
+        "A": "O(1)",
+        "B": "O(log n)",
+        "C": "O(n)",
+        "D": "O(n²)"
+      }},
+      "correct_answer": "B",
+      "difficulty": "medium",
+      "concept": "time complexity",
+      "explanation": "Binary search divides the search space in half each time, resulting in O(log n) complexity."
+    }}
+  ]
+}}
+
+Generate {num_questions} questions now.
+Difficulty mix: {difficulty_mix}
+Return ONLY the JSON, nothing else.
+"""),
+            ("user", "Generate the quiz in valid JSON format.")
+        ])
+        
+        chain = prompt | self.llm | StrOutputParser()
+        
+        try:
+            result = await chain.ainvoke({
+                "topic": topic,
+                "level": level,
+                "num_questions": num_questions,
+                "difficulty_mix": difficulty_mix
+            })
+            
+            print("=" * 50)
+            print("RAW AI RESPONSE:")
+            print(result)
+            print("=" * 50)
+            
+            # Remove markdown code blocks
+            result = re.sub(r'```json\s*', '', result)
+            result = re.sub(r'\s*```', '', result)
+            result = result.strip()
+            
+            # Parse JSON
+            quiz_data = json.loads(result)
+            
+            # Validate structure
+            if "questions" not in quiz_data:
+                raise ValueError("Response missing 'questions' key")
+            
+            questions = quiz_data["questions"]
+            
+            # Ensure all questions have required fields
+            for i, q in enumerate(questions):
+                if "question_number" not in q:
+                    q["question_number"] = i + 1
+                if "difficulty" not in q:
+                    q["difficulty"] = "medium"
+                if "concept" not in q:
+                    q["concept"] = topic
+                if "explanation" not in q:
+                    q["explanation"] = "Explanation not provided."
+            
+            return questions
+            
+        except json.JSONDecodeError as e:
+            print(f" JSON Parse Error: {e}")
+            print(f"Failed to parse: {result[:500]}")
+            raise Exception(f"AI returned invalid JSON: {str(e)}")
+        except Exception as e:
+            print(f" Error generating quiz: {e}")
+            raise
 
 # Create singleton instance
 ai_service = AITutorService()
