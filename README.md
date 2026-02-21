@@ -1,6 +1,6 @@
 # 🎓 GenAI Tutor
 
-An AI-powered personalized tutoring platform that adapts to student proficiency levels, generates interactive quizzes, and tracks learning progress with detailed analytics.
+An AI-powered personalized tutoring platform that adapts to student proficiency levels, generates interactive quizzes, visualizes data structures, and tracks learning progress with detailed analytics.
 
 > 🚧 **Active Development** — Built step by step as a learning project. Star ⭐ the repo to follow progress!
 
@@ -24,11 +24,18 @@ An AI-powered personalized tutoring platform that adapts to student proficiency 
   - Detailed answer explanations
   - Performance breakdown by difficulty (easy/medium/hard)
   - Quiz history and results tracking
+- **Data Structure Visualizations** — Interactive visual learning tools:
+  - **Array Visualizer** with real-time animations
+  - Push, Pop, Insert, Delete, and Access operations
+  - Memory address display
+  - Index highlighting
+  - O(1) access time demonstration
+  - Smooth animations with Framer Motion
 - **Persistent Profiles** — Profiles and learning data saved to database and remembered across sessions
 
 ### 🔮 Features (Coming Soon)
 
-- **Data Structure Visualizations** — Interactive memory diagrams for arrays, linked lists, trees
+- **More Visualizations** — Linked Lists, Stacks, Queues, Binary Trees
 - **Analytics Dashboard** — Charts for progress tracking and weak area identification
 - **User Authentication** — Secure login with JWT tokens
 - **Spaced Repetition** — Smart review system for optimal learning
@@ -51,6 +58,7 @@ An AI-powered personalized tutoring platform that adapts to student proficiency 
 - **Next.js 14** — React framework with App Router
 - **TypeScript** — Type-safe JavaScript
 - **Tailwind CSS** — Utility-first CSS framework
+- **Framer Motion** — Smooth animations for visualizations
 - **React Hooks** — useState, useEffect for state management
 
 ### AI
@@ -215,8 +223,10 @@ genai-tutor/
 │       │   │   └── index.tsx        # 3-step profile setup wizard
 │       │   ├── QuizPlayer/
 │       │   │   └── index.tsx        # Quiz taking interface
-│       │   └── QuizResults/
-│       │       └── index.tsx        # Quiz results and review
+│       │   ├── QuizResults/
+│       │   │   └── index.tsx        # Quiz results and review
+│       │   └── Visualizations/
+│       │       └── ArrayVisualizer.tsx  # Interactive array visualization
 │       └── services/
 │           └── api.ts               # Type-safe API client
 │
@@ -345,6 +355,15 @@ npm run dev
 # Then visit: http://localhost:3000
 ```
 
+### Test Array Visualizer
+
+1. Create a profile or log in
+2. Enter "arrays" as a topic
+3. Click "Explain Topic"
+4. Click "📊 Visualize arrays" button
+5. Try Push, Pop, Insert, Delete, and Access operations
+6. Watch the smooth animations!
+
 ---
 
 ## 📈 Development Progress
@@ -374,10 +393,22 @@ npm run dev
   - [x] Quiz history and results tracking
   - [x] Quiz player UI with timer
   - [x] Quiz results UI with detailed review
+- [x] **Step 5A** — Data structure visualizations (Arrays)
+  - [x] Install Framer Motion for animations
+  - [x] Interactive array visualizer component
+  - [x] Push operation (add to end)
+  - [x] Pop operation (remove from end)
+  - [x] Insert at specific index
+  - [x] Delete at specific index
+  - [x] Access element with O(1) demonstration
+  - [x] Memory address display
+  - [x] Index highlighting
+  - [x] Smooth animations and transitions
+  - [x] Integration with main learning page
 
 ### 🔲 In Progress / Coming Next
 
-- [ ] **Step 5** — Interactive data structure visualizations
+- [ ] **Step 5B** — More visualizations (Linked Lists, Stacks, Queues, Trees)
 - [ ] **Step 6** — Analytics dashboard with charts
 - [ ] **Step 7** — User authentication (JWT)
 - [ ] **Step 8** — Deployment (Vercel + Railway)
@@ -390,12 +421,21 @@ npm run dev
 |---------|------|
 | Groq API (Llama 3.3 70B) | **$0.00 / month** |
 | SQLite (development) | **$0.00** |
+| Framer Motion | **$0.00** |
 | Next.js (Vercel — coming soon) | **$0.00** |
 | **Total** | **$0.00** 🎉 |
 
 ---
 
 ## 🎯 Key Features Showcase
+
+### Array Visualizer
+- **Interactive Operations**: Push, Pop, Insert, Delete, Access with visual feedback
+- **Real-time Animations**: Smooth transitions using Framer Motion
+- **Educational Display**: Shows memory addresses, indices, and O(1) access time
+- **Visual Highlighting**: Elements highlight during operations
+- **Operation Status**: Clear feedback on what's happening
+- **Key Concepts**: Explains contiguous memory, index-based access, and fixed types
 
 ### Quiz System
 - **Adaptive Difficulty**: Questions adjust based on student level (beginner/intermediate/advanced)
@@ -410,8 +450,30 @@ npm run dev
 - **Personalized**: Content adapts to individual student level
 - **Comprehensive**: Explanations include analogies, examples, and key takeaways
 - **Interactive**: Practice questions with hints
+- **Visual**: Array visualizations with real-time animations
 - **Tracked**: Every session saved with timestamps and metadata
-- **Visual**: Clean, modern UI with progress indicators
+- **Engaging**: Clean, modern UI with smooth transitions
+
+---
+
+## 🎨 Visualization Features
+
+### Array Visualizer Operations
+
+| Operation | Description | Time Complexity |
+|-----------|-------------|-----------------|
+| **Push** | Add element to end of array | O(1) amortized |
+| **Pop** | Remove element from end | O(1) |
+| **Insert** | Insert element at specific index | O(n) |
+| **Delete** | Remove element at specific index | O(n) |
+| **Access** | Get element by index | O(1) |
+
+All operations include:
+- ✨ Smooth animations
+- 🎯 Visual highlighting
+- 📍 Index and memory address display
+- ⏱️ Operation status messages
+- 🔄 Reset functionality
 
 ---
 
@@ -439,6 +501,26 @@ MIT License — feel free to use this project for learning purposes.
 - AI orchestration by [LangChain](https://langchain.com/)
 - Free AI inference by [Groq](https://groq.com/)
 - Framework by [FastAPI](https://fastapi.tiangolo.com/) and [Next.js](https://nextjs.org/)
+- Animations by [Framer Motion](https://www.framer.com/motion/)
+
+---
+
+## 📸 Features in Action
+
+### Profile Setup
+Multi-step wizard with level and learning style selection
+
+### Learning Dashboard
+Personalized greeting, stats, topic exploration, and recent history
+
+### Quiz Interface
+Timer-based multiple choice questions with progress tracking
+
+### Quiz Results
+Detailed score breakdown with answer review and explanations
+
+### Array Visualizer
+Interactive visualization with real-time animations for all operations
 
 ---
 
