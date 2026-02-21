@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { api } from '@/services/api';
 import ProfileSetup from '@/components/ProfileSetup';
+import ArrayVisualizer from '@/components/Visualizations/ArrayVisualizer';
 
 export default function Home() {
   const [user, setUser] = useState<any>(null);
@@ -11,6 +12,8 @@ export default function Home() {
   const [explanation, setExplanation] = useState<any>(null);
   const [aiLoading, setAiLoading] = useState(false);
   const [greeting, setGreeting] = useState('');
+  const [showVisualizer, setShowVisualizer] = useState(false);
+  const [visualizerTopic, setVisualizerTopic] = useState('');
 
   // Check if user already has a profile saved
   useEffect(() => {
@@ -189,21 +192,35 @@ export default function Home() {
 
         {/* Explanation Result */}
         {explanation && (
-          <div className="bg-white rounded-2xl shadow-sm border border-green-100 p-8 mb-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xl font-bold text-gray-800 capitalize">
-                📖 {explanation.topic}
-              </h3>
-              <div className="flex gap-4 text-sm text-gray-500">
-                <span>⏱️ {explanation.estimated_reading_time} min read</span>
-                <span>📝 {explanation.word_count} words</span>
+          <div className="space-y-4 mb-6">
+            <div className="bg-white rounded-2xl shadow-sm border border-green-100 p-8">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-xl font-bold text-gray-800 capitalize">
+                  📖 {explanation.topic}
+                </h3>
+                <div className="flex gap-4 text-sm text-gray-500">
+                  <span>⏱️ {explanation.estimated_reading_time} min read</span>
+                  <span>📝 {explanation.word_count} words</span>
+                </div>
+              </div>
+              <div className="prose max-w-none">
+                <div className="whitespace-pre-wrap leading-relaxed text-gray-700">
+                  {explanation.explanation}
+                </div>
               </div>
             </div>
-            <div className="prose max-w-none">
-              <div className="whitespace-pre-wrap leading-relaxed text-gray-700">
-                {explanation.explanation}
-              </div>
-            </div>
+
+            {/* Visualize Button */}
+            <button
+              onClick={() => {
+                setVisualizerTopic(explanation.topic);
+                setShowVisualizer(true);
+              }}
+              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 rounded-xl font-bold text-lg hover:shadow-lg transition flex items-center justify-center gap-2"
+            >
+              <span>📊</span>
+              <span>Visualize {explanation.topic}</span>
+            </button>
           </div>
         )}
 
@@ -228,6 +245,13 @@ export default function Home() {
               ))}
             </div>
           </div>
+        )}
+
+        {/* Array Visualizer Popup */}
+        {showVisualizer && (
+          <ArrayVisualizer
+            onClose={() => setShowVisualizer(false)}
+          />
         )}
 
       </div>
