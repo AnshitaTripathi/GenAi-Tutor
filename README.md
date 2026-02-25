@@ -1,6 +1,6 @@
 # 🎓 GenAI Tutor
 
-An AI-powered personalized tutoring platform that adapts to student proficiency levels, generates interactive quizzes, visualizes data structures with animations, and tracks learning progress with detailed analytics.
+An AI-powered personalized tutoring platform that adapts to student proficiency levels, generates interactive quizzes, visualizes data structures with real-time animations, and tracks learning progress with detailed analytics.
 
 > 🚧 **Active Development** — Built step by step as a learning project. Star ⭐ the repo to follow progress!
 
@@ -24,20 +24,20 @@ An AI-powered personalized tutoring platform that adapts to student proficiency 
   - Detailed answer explanations
   - Performance breakdown by difficulty (easy/medium/hard)
   - Quiz history and results tracking
-- **Interactive Data Structure Visualizations** — Visual learning tools with animations:
-  - **Visualizer Selector** — Choose between different data structures
-  - **Array Visualizer** with Push, Pop, Insert, Delete, Access operations
-  - **Stack Visualizer** with Push, Pop, Peek, isEmpty operations
-  - Memory address and index display
-  - Real-time LIFO demonstration
-  - Smooth animations with Framer Motion
-  - O(1) time complexity demonstration
-  - Visual highlighting and transitions
+- **Interactive Data Structure Visualizations** — Three complete visualizers with animations:
+  - **Visualizer Selector** — Choose between Array, Stack, or Queue
+  - **Array Visualizer** — Push, Pop, Insert, Delete, Access operations with O(1) demonstration
+  - **Stack Visualizer** — Push, Pop, Peek, isEmpty with LIFO visualization
+  - **Queue Visualizer** — Enqueue, Dequeue, Front, Rear with FIFO demonstration
+  - Memory addresses and position indicators
+  - Real-time animations with Framer Motion
+  - Visual highlighting and smooth transitions
+  - Educational tooltips and key concepts
 - **Persistent Profiles** — Profiles and learning data saved to database and remembered across sessions
 
 ### 🔮 Features (Coming Soon)
 
-- **More Visualizations** — Queue, Linked Lists, Binary Trees
+- **More Visualizations** — Linked Lists, Binary Trees
 - **Analytics Dashboard** — Charts for progress tracking and weak area identification
 - **User Authentication** — Secure login with JWT tokens
 - **Spaced Repetition** — Smart review system for optimal learning
@@ -215,7 +215,7 @@ genai-tutor/
 │
 ├── frontend/
 │   ├── app/
-│   │   ├── page.tsx                 # Main learning dashboard with visualizer selector
+│   │   ├── page.tsx                 # Main learning dashboard with 3 visualizers
 │   │   ├── layout.tsx               # Root layout
 │   │   └── globals.css              # Global styles and animations
 │   │
@@ -229,7 +229,8 @@ genai-tutor/
 │       │   │   └── index.tsx        # Quiz results and review
 │       │   └── Visualizations/
 │       │       ├── ArrayVisualizer.tsx   # Interactive array visualization
-│       │       └── StackVisualizer.tsx   # Interactive stack visualization
+│       │       ├── StackVisualizer.tsx   # Interactive stack visualization
+│       │       └── QueueVisualizer.tsx   # Interactive queue visualization
 │       └── services/
 │           └── api.ts               # Type-safe API client
 │
@@ -358,16 +359,17 @@ npm run dev
 # Then visit: http://localhost:3000
 ```
 
-### Test Visualizers
+### Test All Visualizers
 
 1. Create a profile or log in
-2. Enter any topic (e.g., "arrays", "stacks", "data structures")
+2. Enter any topic (e.g., "data structures")
 3. Click "Explain Topic"
-4. Scroll down to see **two visualizer buttons**:
-   - 📊 **Array** — Try Push, Pop, Insert, Delete, Access
-   - 🥞 **Stack** — Try Push, Pop, Peek, isEmpty
-5. Click either button to open the interactive visualizer
-6. Experiment with operations and watch the animations!
+4. Scroll down to see **three visualizer buttons**:
+   - 📊 **Array** — Index-based access, contiguous memory
+   - 🥞 **Stack** — LIFO operations, push/pop/peek
+   - 🎫 **Queue** — FIFO operations, enqueue/dequeue
+5. Click any button to open the interactive visualizer
+6. Experiment with operations and watch the smooth animations!
 
 ---
 
@@ -398,24 +400,19 @@ npm run dev
   - [x] Quiz history and results tracking
   - [x] Quiz player UI with timer
   - [x] Quiz results UI with detailed review
-- [x] **Step 5A** — Array Visualizer
-  - [x] Interactive array component with Framer Motion
-  - [x] Push, Pop, Insert, Delete, Access operations
-  - [x] Memory address and index display
-  - [x] O(1) access time demonstration
-  - [x] Visual highlighting and smooth animations
-- [x] **Step 5B** — Stack Visualizer
-  - [x] Interactive stack component with LIFO operations
-  - [x] Push, Pop, Peek, isEmpty operations
-  - [x] Top element highlighting
-  - [x] Stack size and status display
-  - [x] Vertical stacking visualization
-  - [x] Visual feedback for all operations
-  - [x] Visualizer selector UI for choosing data structures
+- [x] **Step 5A-C** — Data Structure Visualizations (3 complete)
+  - [x] Array Visualizer with contiguous memory demonstration
+  - [x] Stack Visualizer with LIFO operations
+  - [x] Queue Visualizer with FIFO operations
+  - [x] Visualizer selector UI with gradient buttons
+  - [x] Framer Motion animations for all operations
+  - [x] Visual highlighting and real-time feedback
+  - [x] Memory addresses and position indicators
+  - [x] Educational tooltips and key concepts
+  - [x] Time complexity demonstrations
 
 ### 🔲 In Progress / Coming Next
 
-- [ ] **Step 5C** — Queue Visualizer (FIFO operations)
 - [ ] **Step 5D** — Linked List Visualizer (nodes with pointers)
 - [ ] **Step 5E** — Binary Tree Visualizer (hierarchical structure)
 - [ ] **Step 6** — Analytics dashboard with charts
@@ -438,25 +435,40 @@ npm run dev
 
 ## 🎯 Key Features Showcase
 
-### Interactive Visualizations
+### Interactive Visualizations (3 Complete!)
 
 #### Visualizer Selector
-- **User Choice** — Select between Array and Stack visualizers
-- **Beautiful UI** — Gradient buttons with icons and descriptions
+- **Beautiful UI** — Three gradient buttons with emojis and descriptions
+- **User Choice** — Select between Array, Stack, or Queue
 - **Easy Access** — Available after every topic explanation
+- **Responsive Design** — Works on all screen sizes
 
-#### Array Visualizer
+#### Array Visualizer 📊
 - **Operations**: Push, Pop, Insert at Index, Delete at Index, Access Element
-- **Visual Features**: Memory addresses, index numbers, O(1) access demonstration
-- **Animations**: Smooth transitions for add/remove operations
-- **Educational**: Shows contiguous memory and index-based access
+- **Key Features**: 
+  - Memory addresses displayed (simulated hex values)
+  - Index numbers for each element
+  - O(1) access time demonstration
+  - Smooth add/remove animations
+- **Educational Value**: Shows contiguous memory and index-based access principles
 
-#### Stack Visualizer
+#### Stack Visualizer 🥞
 - **Operations**: Push (add to top), Pop (remove from top), Peek (view top), isEmpty (check if empty)
-- **LIFO Demonstration**: Last In, First Out principle visualization
-- **Visual Features**: Top indicator, position labels, stack size display
-- **Animations**: Smooth stacking and unstacking animations
-- **Real-time Status**: Shows current size, isEmpty status, and top value
+- **Key Features**:
+  - Vertical stacking visualization
+  - Top element highlighting
+  - Position labels for each element
+  - Real-time size and status display
+- **Educational Value**: Demonstrates LIFO (Last In, First Out) principle with visual feedback
+
+#### Queue Visualizer 🎫
+- **Operations**: Enqueue (add to rear), Dequeue (remove from front), Front (view first), Rear (view last), isEmpty
+- **Key Features**:
+  - Horizontal line visualization
+  - Front and rear indicators
+  - Direction arrows (IN → and ← OUT)
+  - Real-time tracking of both ends
+- **Educational Value**: Demonstrates FIFO (First In, First Out) principle like a real waiting line
 
 ### Quiz System
 - **Adaptive Difficulty**: Questions adjust based on student level (beginner/intermediate/advanced)
@@ -470,8 +482,8 @@ npm run dev
 ### Learning Experience
 - **Personalized**: Content adapts to individual student level
 - **Comprehensive**: Explanations include analogies, examples, and key takeaways
-- **Interactive**: Practice questions with hints and visual learning tools
-- **Visual**: Multiple data structure visualizations with real-time animations
+- **Interactive**: Practice questions, quizzes, and visual learning tools
+- **Visual**: Three complete data structure visualizations with real-time animations
 - **Tracked**: Every session saved with timestamps and metadata
 - **Engaging**: Clean, modern UI with smooth transitions and gradient designs
 
@@ -481,21 +493,25 @@ npm run dev
 
 ### Available Visualizers
 
-| Visualizer | Operations | Key Concepts | Status |
-|------------|-----------|--------------|--------|
-| **Array** 📊 | Push, Pop, Insert, Delete, Access | Contiguous memory, O(1) access, Index-based | ✅ Complete |
-| **Stack** 🥞 | Push, Pop, Peek, isEmpty | LIFO, Top-only access, O(1) operations | ✅ Complete |
-| **Queue** 🎫 | Enqueue, Dequeue, Front, Rear | FIFO, Front/Rear pointers | 🔄 Coming Soon |
-| **Linked List** 🔗 | Insert, Delete, Traverse, Search | Nodes, Pointers, Dynamic memory | 🔄 Coming Soon |
-| **Binary Tree** 🌳 | Insert, Delete, Traversals | Parent-child, Recursive structure | 🔄 Coming Soon |
+| Visualizer | Operations | Key Concepts | Time Complexity | Status |
+|------------|-----------|--------------|-----------------|--------|
+| **Array** 📊 | Push, Pop, Insert, Delete, Access | Contiguous memory, Index-based, O(1) access | Access: O(1), Insert/Delete: O(n) | ✅ Complete |
+| **Stack** 🥞 | Push, Pop, Peek, isEmpty | LIFO, Top-only access | All: O(1) | ✅ Complete |
+| **Queue** 🎫 | Enqueue, Dequeue, Front, Rear, isEmpty | FIFO, Front/Rear pointers | All: O(1) | ✅ Complete |
+| **Linked List** 🔗 | Insert, Delete, Traverse, Search | Nodes, Pointers, Dynamic memory | Access: O(n), Insert/Delete: O(1) | 🔄 Coming Soon |
+| **Binary Tree** 🌳 | Insert, Delete, Traversals | Parent-child, Recursive | Search: O(log n) avg | 🔄 Coming Soon |
 
 ### Common Features Across All Visualizers
 - ✨ Smooth Framer Motion animations
 - 🎯 Visual highlighting during operations
-- 📊 Real-time status updates
+- 📊 Real-time status updates and operation feedback
 - ⏱️ Time complexity demonstrations
-- 🔄 Reset functionality
-- 💡 Educational tooltips and explanations
+- 🔄 Reset functionality to restore initial state
+- 💡 Educational tooltips and key concept explanations
+- 🎨 Beautiful gradient color schemes for each type
+- 📍 Position indicators (indices, top/bottom, front/rear)
+- 🖱️ Interactive controls with input validation
+- 📱 Responsive design for all screen sizes
 
 ---
 
@@ -536,19 +552,22 @@ Multi-step wizard with level and learning style selection
 Personalized greeting, stats, topic exploration, and recent history
 
 ### Quiz Interface
-Timer-based multiple choice questions with progress tracking
+Timer-based multiple choice questions with progress tracking and animations
 
 ### Quiz Results
 Detailed score breakdown with answer review and explanations
 
 ### Visualizer Selector
-Beautiful gradient buttons to choose between Array and Stack visualizations
+Three beautiful gradient buttons to choose between Array, Stack, and Queue visualizations
 
 ### Array Visualizer
-Interactive array with memory addresses, indices, and smooth animations for all operations
+Contiguous memory layout with indices, memory addresses, and smooth animations for all operations
 
 ### Stack Visualizer
-Vertical LIFO visualization with push/pop animations and top element highlighting
+Vertical LIFO visualization with push/pop animations, top element highlighting, and position labels
+
+### Queue Visualizer
+Horizontal FIFO visualization with enqueue/dequeue animations, front/rear indicators, and directional flow
 
 ---
 
