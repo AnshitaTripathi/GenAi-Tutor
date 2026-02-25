@@ -5,6 +5,7 @@ import { api } from '@/services/api';
 import ProfileSetup from '@/components/ProfileSetup';
 import ArrayVisualizer from '@/components/Visualizations/ArrayVisualizer';
 import StackVisualizer from '@/components/Visualizations/StackVisualizer';
+import QueueVisualizer from '@/components/Visualizations/QueueVisualizer';
 
 export default function Home() {
   const [user, setUser] = useState<any>(null);
@@ -15,7 +16,7 @@ export default function Home() {
   const [greeting, setGreeting] = useState('');
   const [showVisualizer, setShowVisualizer] = useState(false);
   const [visualizerTopic, setVisualizerTopic] = useState('');
-  const [visualizerType, setVisualizerType] = useState<'array' | 'stack'>('array');
+  const [visualizerType, setVisualizerType] = useState<'array' | 'stack' | 'queue'>('array');
 
   // Check if user already has a profile saved
   useEffect(() => {
@@ -223,7 +224,7 @@ export default function Home() {
                 </p>
               </div>
               
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-3 gap-4">
                 {/* Array Button */}
                 <button
                   onClick={() => {
@@ -234,7 +235,7 @@ export default function Home() {
                 >
                   <span className="text-3xl">📊</span>
                   <span className="text-lg">Array</span>
-                  <span className="text-xs opacity-80">Index-based access</span>
+                  <span className="text-xs opacity-80">Index-based</span>
                 </button>
 
                 {/* Stack Button */}
@@ -247,7 +248,20 @@ export default function Home() {
                 >
                   <span className="text-3xl">🥞</span>
                   <span className="text-lg">Stack</span>
-                  <span className="text-xs opacity-80">LIFO operations</span>
+                  <span className="text-xs opacity-80">LIFO</span>
+                </button>
+
+                {/* Queue Button */}
+                <button
+                  onClick={() => {
+                    setVisualizerType('queue');
+                    setShowVisualizer(true);
+                  }}
+                  className="px-6 py-6 bg-gradient-to-r from-teal-600 to-cyan-600 text-white rounded-xl font-bold hover:shadow-lg transition-all hover:scale-105 flex flex-col items-center justify-center gap-2"
+                >
+                  <span className="text-3xl">🎫</span>
+                  <span className="text-lg">Queue</span>
+                  <span className="text-xs opacity-80">FIFO</span>
                 </button>
               </div>
             </div>
@@ -286,6 +300,12 @@ export default function Home() {
 
         {showVisualizer && visualizerType === 'stack' && (
           <StackVisualizer
+            onClose={() => setShowVisualizer(false)}
+          />
+        )}
+
+        {showVisualizer && visualizerType === 'queue' && (
+          <QueueVisualizer
             onClose={() => setShowVisualizer(false)}
           />
         )}
