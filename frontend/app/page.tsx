@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { api } from '@/services/api';
 import ProfileSetup from '@/components/ProfileSetup';
 import ArrayVisualizer from '@/components/Visualizations/ArrayVisualizer';
+import StackVisualizer from '@/components/Visualizations/StackVisualizer';
 
 export default function Home() {
   const [user, setUser] = useState<any>(null);
@@ -14,6 +15,7 @@ export default function Home() {
   const [greeting, setGreeting] = useState('');
   const [showVisualizer, setShowVisualizer] = useState(false);
   const [visualizerTopic, setVisualizerTopic] = useState('');
+  const [visualizerType, setVisualizerType] = useState<'array' | 'stack'>('array');
 
   // Check if user already has a profile saved
   useEffect(() => {
@@ -210,17 +212,45 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Visualize Button */}
-            <button
-              onClick={() => {
-                setVisualizerTopic(explanation.topic);
-                setShowVisualizer(true);
-              }}
-              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 rounded-xl font-bold text-lg hover:shadow-lg transition flex items-center justify-center gap-2"
-            >
-              <span>📊</span>
-              <span>Visualize {explanation.topic}</span>
-            </button>
+            {/* Visualizer Selector */}
+            <div className="bg-white rounded-2xl shadow-sm border border-purple-100 p-6">
+              <div className="text-center mb-4">
+                <h3 className="text-lg font-bold text-gray-800 mb-2">
+                  🎨 Interactive Visualizations
+                </h3>
+                <p className="text-sm text-gray-600">
+                  Choose a data structure to visualize and interact with
+                </p>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4">
+                {/* Array Button */}
+                <button
+                  onClick={() => {
+                    setVisualizerType('array');
+                    setShowVisualizer(true);
+                  }}
+                  className="px-6 py-6 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-bold hover:shadow-lg transition-all hover:scale-105 flex flex-col items-center justify-center gap-2"
+                >
+                  <span className="text-3xl">📊</span>
+                  <span className="text-lg">Array</span>
+                  <span className="text-xs opacity-80">Index-based access</span>
+                </button>
+
+                {/* Stack Button */}
+                <button
+                  onClick={() => {
+                    setVisualizerType('stack');
+                    setShowVisualizer(true);
+                  }}
+                  className="px-6 py-6 bg-gradient-to-r from-orange-600 to-red-600 text-white rounded-xl font-bold hover:shadow-lg transition-all hover:scale-105 flex flex-col items-center justify-center gap-2"
+                >
+                  <span className="text-3xl">🥞</span>
+                  <span className="text-lg">Stack</span>
+                  <span className="text-xs opacity-80">LIFO operations</span>
+                </button>
+              </div>
+            </div>
           </div>
         )}
 
@@ -247,9 +277,15 @@ export default function Home() {
           </div>
         )}
 
-        {/* Array Visualizer Popup */}
-        {showVisualizer && (
+        {/* Visualizer Popups */}
+        {showVisualizer && visualizerType === 'array' && (
           <ArrayVisualizer
+            onClose={() => setShowVisualizer(false)}
+          />
+        )}
+
+        {showVisualizer && visualizerType === 'stack' && (
+          <StackVisualizer
             onClose={() => setShowVisualizer(false)}
           />
         )}
