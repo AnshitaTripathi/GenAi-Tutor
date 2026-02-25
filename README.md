@@ -1,6 +1,6 @@
 # 🎓 GenAI Tutor
 
-An AI-powered personalized tutoring platform that adapts to student proficiency levels, generates interactive quizzes, visualizes data structures, and tracks learning progress with detailed analytics.
+An AI-powered personalized tutoring platform that adapts to student proficiency levels, generates interactive quizzes, visualizes data structures with animations, and tracks learning progress with detailed analytics.
 
 > 🚧 **Active Development** — Built step by step as a learning project. Star ⭐ the repo to follow progress!
 
@@ -24,18 +24,20 @@ An AI-powered personalized tutoring platform that adapts to student proficiency 
   - Detailed answer explanations
   - Performance breakdown by difficulty (easy/medium/hard)
   - Quiz history and results tracking
-- **Data Structure Visualizations** — Interactive visual learning tools:
-  - **Array Visualizer** with real-time animations
-  - Push, Pop, Insert, Delete, and Access operations
-  - Memory address display
-  - Index highlighting
-  - O(1) access time demonstration
+- **Interactive Data Structure Visualizations** — Visual learning tools with animations:
+  - **Visualizer Selector** — Choose between different data structures
+  - **Array Visualizer** with Push, Pop, Insert, Delete, Access operations
+  - **Stack Visualizer** with Push, Pop, Peek, isEmpty operations
+  - Memory address and index display
+  - Real-time LIFO demonstration
   - Smooth animations with Framer Motion
+  - O(1) time complexity demonstration
+  - Visual highlighting and transitions
 - **Persistent Profiles** — Profiles and learning data saved to database and remembered across sessions
 
 ### 🔮 Features (Coming Soon)
 
-- **More Visualizations** — Linked Lists, Stacks, Queues, Binary Trees
+- **More Visualizations** — Queue, Linked Lists, Binary Trees
 - **Analytics Dashboard** — Charts for progress tracking and weak area identification
 - **User Authentication** — Secure login with JWT tokens
 - **Spaced Repetition** — Smart review system for optimal learning
@@ -213,7 +215,7 @@ genai-tutor/
 │
 ├── frontend/
 │   ├── app/
-│   │   ├── page.tsx                 # Main learning dashboard
+│   │   ├── page.tsx                 # Main learning dashboard with visualizer selector
 │   │   ├── layout.tsx               # Root layout
 │   │   └── globals.css              # Global styles and animations
 │   │
@@ -226,7 +228,8 @@ genai-tutor/
 │       │   ├── QuizResults/
 │       │   │   └── index.tsx        # Quiz results and review
 │       │   └── Visualizations/
-│       │       └── ArrayVisualizer.tsx  # Interactive array visualization
+│       │       ├── ArrayVisualizer.tsx   # Interactive array visualization
+│       │       └── StackVisualizer.tsx   # Interactive stack visualization
 │       └── services/
 │           └── api.ts               # Type-safe API client
 │
@@ -355,14 +358,16 @@ npm run dev
 # Then visit: http://localhost:3000
 ```
 
-### Test Array Visualizer
+### Test Visualizers
 
 1. Create a profile or log in
-2. Enter "arrays" as a topic
+2. Enter any topic (e.g., "arrays", "stacks", "data structures")
 3. Click "Explain Topic"
-4. Click "📊 Visualize arrays" button
-5. Try Push, Pop, Insert, Delete, and Access operations
-6. Watch the smooth animations!
+4. Scroll down to see **two visualizer buttons**:
+   - 📊 **Array** — Try Push, Pop, Insert, Delete, Access
+   - 🥞 **Stack** — Try Push, Pop, Peek, isEmpty
+5. Click either button to open the interactive visualizer
+6. Experiment with operations and watch the animations!
 
 ---
 
@@ -393,22 +398,26 @@ npm run dev
   - [x] Quiz history and results tracking
   - [x] Quiz player UI with timer
   - [x] Quiz results UI with detailed review
-- [x] **Step 5A** — Data structure visualizations (Arrays)
-  - [x] Install Framer Motion for animations
-  - [x] Interactive array visualizer component
-  - [x] Push operation (add to end)
-  - [x] Pop operation (remove from end)
-  - [x] Insert at specific index
-  - [x] Delete at specific index
-  - [x] Access element with O(1) demonstration
-  - [x] Memory address display
-  - [x] Index highlighting
-  - [x] Smooth animations and transitions
-  - [x] Integration with main learning page
+- [x] **Step 5A** — Array Visualizer
+  - [x] Interactive array component with Framer Motion
+  - [x] Push, Pop, Insert, Delete, Access operations
+  - [x] Memory address and index display
+  - [x] O(1) access time demonstration
+  - [x] Visual highlighting and smooth animations
+- [x] **Step 5B** — Stack Visualizer
+  - [x] Interactive stack component with LIFO operations
+  - [x] Push, Pop, Peek, isEmpty operations
+  - [x] Top element highlighting
+  - [x] Stack size and status display
+  - [x] Vertical stacking visualization
+  - [x] Visual feedback for all operations
+  - [x] Visualizer selector UI for choosing data structures
 
 ### 🔲 In Progress / Coming Next
 
-- [ ] **Step 5B** — More visualizations (Linked Lists, Stacks, Queues, Trees)
+- [ ] **Step 5C** — Queue Visualizer (FIFO operations)
+- [ ] **Step 5D** — Linked List Visualizer (nodes with pointers)
+- [ ] **Step 5E** — Binary Tree Visualizer (hierarchical structure)
 - [ ] **Step 6** — Analytics dashboard with charts
 - [ ] **Step 7** — User authentication (JWT)
 - [ ] **Step 8** — Deployment (Vercel + Railway)
@@ -429,13 +438,25 @@ npm run dev
 
 ## 🎯 Key Features Showcase
 
-### Array Visualizer
-- **Interactive Operations**: Push, Pop, Insert, Delete, Access with visual feedback
-- **Real-time Animations**: Smooth transitions using Framer Motion
-- **Educational Display**: Shows memory addresses, indices, and O(1) access time
-- **Visual Highlighting**: Elements highlight during operations
-- **Operation Status**: Clear feedback on what's happening
-- **Key Concepts**: Explains contiguous memory, index-based access, and fixed types
+### Interactive Visualizations
+
+#### Visualizer Selector
+- **User Choice** — Select between Array and Stack visualizers
+- **Beautiful UI** — Gradient buttons with icons and descriptions
+- **Easy Access** — Available after every topic explanation
+
+#### Array Visualizer
+- **Operations**: Push, Pop, Insert at Index, Delete at Index, Access Element
+- **Visual Features**: Memory addresses, index numbers, O(1) access demonstration
+- **Animations**: Smooth transitions for add/remove operations
+- **Educational**: Shows contiguous memory and index-based access
+
+#### Stack Visualizer
+- **Operations**: Push (add to top), Pop (remove from top), Peek (view top), isEmpty (check if empty)
+- **LIFO Demonstration**: Last In, First Out principle visualization
+- **Visual Features**: Top indicator, position labels, stack size display
+- **Animations**: Smooth stacking and unstacking animations
+- **Real-time Status**: Shows current size, isEmpty status, and top value
 
 ### Quiz System
 - **Adaptive Difficulty**: Questions adjust based on student level (beginner/intermediate/advanced)
@@ -449,31 +470,32 @@ npm run dev
 ### Learning Experience
 - **Personalized**: Content adapts to individual student level
 - **Comprehensive**: Explanations include analogies, examples, and key takeaways
-- **Interactive**: Practice questions with hints
-- **Visual**: Array visualizations with real-time animations
+- **Interactive**: Practice questions with hints and visual learning tools
+- **Visual**: Multiple data structure visualizations with real-time animations
 - **Tracked**: Every session saved with timestamps and metadata
-- **Engaging**: Clean, modern UI with smooth transitions
+- **Engaging**: Clean, modern UI with smooth transitions and gradient designs
 
 ---
 
 ## 🎨 Visualization Features
 
-### Array Visualizer Operations
+### Available Visualizers
 
-| Operation | Description | Time Complexity |
-|-----------|-------------|-----------------|
-| **Push** | Add element to end of array | O(1) amortized |
-| **Pop** | Remove element from end | O(1) |
-| **Insert** | Insert element at specific index | O(n) |
-| **Delete** | Remove element at specific index | O(n) |
-| **Access** | Get element by index | O(1) |
+| Visualizer | Operations | Key Concepts | Status |
+|------------|-----------|--------------|--------|
+| **Array** 📊 | Push, Pop, Insert, Delete, Access | Contiguous memory, O(1) access, Index-based | ✅ Complete |
+| **Stack** 🥞 | Push, Pop, Peek, isEmpty | LIFO, Top-only access, O(1) operations | ✅ Complete |
+| **Queue** 🎫 | Enqueue, Dequeue, Front, Rear | FIFO, Front/Rear pointers | 🔄 Coming Soon |
+| **Linked List** 🔗 | Insert, Delete, Traverse, Search | Nodes, Pointers, Dynamic memory | 🔄 Coming Soon |
+| **Binary Tree** 🌳 | Insert, Delete, Traversals | Parent-child, Recursive structure | 🔄 Coming Soon |
 
-All operations include:
-- ✨ Smooth animations
-- 🎯 Visual highlighting
-- 📍 Index and memory address display
-- ⏱️ Operation status messages
+### Common Features Across All Visualizers
+- ✨ Smooth Framer Motion animations
+- 🎯 Visual highlighting during operations
+- 📊 Real-time status updates
+- ⏱️ Time complexity demonstrations
 - 🔄 Reset functionality
+- 💡 Educational tooltips and explanations
 
 ---
 
@@ -519,9 +541,15 @@ Timer-based multiple choice questions with progress tracking
 ### Quiz Results
 Detailed score breakdown with answer review and explanations
 
+### Visualizer Selector
+Beautiful gradient buttons to choose between Array and Stack visualizations
+
 ### Array Visualizer
-Interactive visualization with real-time animations for all operations
+Interactive array with memory addresses, indices, and smooth animations for all operations
+
+### Stack Visualizer
+Vertical LIFO visualization with push/pop animations and top element highlighting
 
 ---
 
-**Note**: This project is under active development. More features coming soon! Star ⭐ the repo to follow progress!
+**Note**: This project is under active development. More visualizations and features coming soon! Star ⭐ the repo to follow progress!
