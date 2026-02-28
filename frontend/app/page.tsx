@@ -8,6 +8,7 @@ import StackVisualizer from '@/components/Visualizations/StackVisualizer';
 import QueueVisualizer from '@/components/Visualizations/QueueVisualizer';
 import LinkedListVisualizer from '@/components/Visualizations/LinkedListVisualizer';
 import BinaryTreeVisualizer from '@/components/Visualizations/BinaryTreeVisualizer';
+import AnalyticsDashboard from '@/components/AnalyticsDashboard';
 
 export default function Home() {
   const [user, setUser] = useState<any>(null);
@@ -19,6 +20,7 @@ export default function Home() {
   const [showVisualizer, setShowVisualizer] = useState(false);
   const [visualizerTopic, setVisualizerTopic] = useState('');
   const [visualizerType, setVisualizerType] = useState<'array' | 'stack' | 'queue' | 'linkedlist' | 'binarytree'>('array');
+  const [showAnalytics, setShowAnalytics] = useState(false);
 
   useEffect(() => {
     const savedUser = localStorage.getItem('genai_tutor_user');
@@ -111,9 +113,21 @@ export default function Home() {
               </span>
             </div>
           </div>
-          <button onClick={handleLogout} className="text-sm text-gray-500 hover:text-red-500 transition">
-            Change Profile
-          </button>
+          
+          <div className="flex items-center gap-3">
+            {/* Analytics Button */}
+            <button
+              onClick={() => setShowAnalytics(true)}
+              className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition"
+            >
+              <span>📊</span>
+              <span>Analytics</span>
+            </button>
+            
+            <button onClick={handleLogout} className="text-sm text-gray-500 hover:text-red-500 transition">
+              Change Profile
+            </button>
+          </div>
         </div>
 
         {/* Greeting */}
@@ -267,6 +281,14 @@ export default function Home() {
         )}
         {showVisualizer && visualizerType === 'binarytree' && (
           <BinaryTreeVisualizer onClose={() => setShowVisualizer(false)} />
+        )}
+
+        {/* Analytics Dashboard */}
+        {showAnalytics && (
+          <AnalyticsDashboard
+            username={user.user.username}
+            onClose={() => setShowAnalytics(false)}
+          />
         )}
 
       </div>
