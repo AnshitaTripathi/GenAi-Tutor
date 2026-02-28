@@ -1,49 +1,61 @@
 # 🎓 GenAI Tutor
 
-An AI-powered personalized tutoring platform that adapts to student proficiency levels, generates interactive quizzes, visualizes data structures with real-time animations and pointer demonstrations, and tracks learning progress with detailed analytics.
+An AI-powered personalized tutoring platform that adapts to student proficiency levels, generates interactive quizzes, visualizes data structures with real-time animations, tracks learning progress with analytics dashboards, and provides comprehensive performance insights.
 
-> 🚧 **Active Development** — Built step by step as a learning project. Star ⭐ the repo to follow progress!
+> 🚀 **Complete Learning Platform** — Built step by step as a portfolio project showcasing full-stack development, AI integration, and data visualization skills!
 
 ---
 
-## 🌟 Features (Current)
+## 🌟 Features
 
-### ✅ Completed Features
+### ✅ Complete Feature Set
 
-- **Student Profile System** — Multi-step onboarding with username, level, and learning style preferences
-- **Adaptive AI Explanations** — Real-time topic explanations tailored to beginner, intermediate, and advanced levels
-- **Personalized Greetings** — AI-generated welcome messages based on student profile
-- **Learning History** — Every studied topic is saved and displayed on the dashboard with timestamps
-- **Session Tracking** — Tracks total sessions and topics studied per student
-- **Practice Questions** — AI-generated questions with hints for any topic
-- **Quiz System** — Complete quiz functionality with:
-  - AI-generated multiple choice questions (5 questions per quiz)
-  - Adaptive difficulty based on student level
-  - Timer-based quiz sessions (5 minutes)
-  - Automatic grading and scoring
-  - Detailed answer explanations
+- **Student Profile System** 
+  - Multi-step onboarding wizard
+  - Username, email, proficiency level (beginner/intermediate/advanced)
+  - Learning style preferences (visual/hands-on/conceptual)
+  - Preferred topics selection
+  
+- **AI-Powered Learning**
+  - Adaptive topic explanations tailored to student level
+  - Personalized AI-generated greetings
+  - Practice questions with hints
+  - Real-time topic exploration
+  - Word count and reading time estimates
+  
+- **Interactive Quiz System**
+  - AI-generated multiple choice questions (5 per quiz)
+  - Adaptive difficulty distribution by level
+  - Timer-based sessions (5 minutes with countdown)
+  - Automatic grading and instant feedback
   - Performance breakdown by difficulty (easy/medium/hard)
-  - Quiz history and results tracking
-- **Interactive Data Structure Visualizations** — Four complete visualizers with animations:
-  - **Visualizer Selector** — Choose between Array, Stack, Queue, or Linked List
-  - **Array Visualizer** — Push, Pop, Insert, Delete, Access with O(1) demonstration
-  - **Stack Visualizer** — Push, Pop, Peek, isEmpty with LIFO visualization
-  - **Queue Visualizer** — Enqueue, Dequeue, Front, Rear with FIFO demonstration
-  - **Linked List Visualizer** — Insert at Head/Tail, Delete, Search, Traverse with pointer animations
-  - Memory addresses and position indicators
-  - Real-time animations with Framer Motion
-  - Visual highlighting and smooth transitions
-  - Educational tooltips and key concepts
-  - **19 total operations** across all visualizers
-- **Persistent Profiles** — Profiles and learning data saved to database and remembered across sessions
-
-### 🔮 Features (Coming Soon)
-
-- **Binary Tree Visualization** — Hierarchical structure with traversals
-- **Analytics Dashboard** — Charts for progress tracking and weak area identification
-- **User Authentication** — Secure login with JWT tokens
-- **Spaced Repetition** — Smart review system for optimal learning
-- **Deployment** — Live URL via Vercel and Railway
+  - Detailed answer explanations
+  - Complete quiz history with timestamps
+  
+- **Data Structure Visualizations** (5 Complete!)
+  - **Array Visualizer** 📊 — Push, Pop, Insert, Delete, Access with memory addresses
+  - **Stack Visualizer** 🥞 — Push, Pop, Peek, isEmpty with LIFO demonstration
+  - **Queue Visualizer** 🎫 — Enqueue, Dequeue, Front, Rear with FIFO visualization
+  - **Linked List Visualizer** 🔗 — Insert Head/Tail, Delete, Search, Traverse with pointer animations
+  - **Binary Tree Visualizer** 🌳 — Insert, Delete, Inorder/Preorder/Postorder traversals with BST properties
+  - **25+ total operations** across all visualizers
+  - Smooth Framer Motion animations
+  - Educational tooltips and time complexity displays
+  
+- **Analytics Dashboard** 📊
+  - Performance metrics and statistics cards
+  - Line chart: Score progression over time
+  - Bar chart: Performance by topic
+  - Radar chart: Performance by difficulty level
+  - Recent quizzes table with detailed breakdown
+  - AI-generated insights and recommendations
+  - Improvement rate tracking
+  
+- **Learning History & Progress**
+  - Every topic studied is saved with timestamps
+  - Session tracking and statistics
+  - Recent topics quick access
+  - Persistent profiles across sessions
 
 ---
 
@@ -52,9 +64,9 @@ An AI-powered personalized tutoring platform that adapts to student proficiency 
 ### Backend
 - **FastAPI** — Modern async Python web framework
 - **LangChain** — AI orchestration and prompt management
-- **Groq API** — FREE AI inference (Llama 3.3 70B) — no credit card required!
+- **Groq API** — FREE AI inference (Llama 3.3 70B Versatile)
 - **SQLAlchemy** — ORM for database operations
-- **SQLite** — Lightweight file-based database (development)
+- **SQLite** — Lightweight file-based database
 - **Pydantic** — Data validation and serialization
 - **Uvicorn** — ASGI server
 
@@ -63,12 +75,13 @@ An AI-powered personalized tutoring platform that adapts to student proficiency 
 - **TypeScript** — Type-safe JavaScript
 - **Tailwind CSS** — Utility-first CSS framework
 - **Framer Motion** — Smooth animations for visualizations
-- **React Hooks** — useState, useEffect for state management
+- **Recharts** — Beautiful responsive charts for analytics
+- **React Hooks** — Modern state management
 
-### AI
+### AI & External Services
 - **Groq (FREE)** — Llama 3.3 70B Versatile model
 - **LangChain** — Prompt templates and chain orchestration
-- **Cost: $0.00** — Completely free tier (30 req/min, 14,400/day)
+- **Cost: $0.00** — Completely free tier (30 requests/minute, 14,400/day)
 
 ---
 
@@ -100,15 +113,15 @@ cd backend
 python -m venv venv
 
 # Activate virtual environment
-# On Windows:
+# Windows:
 venv\Scripts\activate
-# On Mac/Linux:
+# Mac/Linux:
 source venv/bin/activate
 
 # Install dependencies
 pip install -r requirements.txt
 
-# Create .env file from template
+# Create .env file
 cp .env.example .env
 # Edit .env and add your GROQ_API_KEY
 
@@ -136,7 +149,7 @@ Frontend runs on: **http://localhost:3000**
 ### 4. Get Your FREE Groq API Key
 
 1. Go to [console.groq.com](https://console.groq.com)
-2. Sign up with Google or GitHub (no credit card!)
+2. Sign up with Google or GitHub (no credit card required!)
 3. Click **API Keys** → **Create API Key**
 4. Copy and paste into your `backend/.env` file
 
@@ -188,54 +201,56 @@ genai-tutor/
 ├── backend/
 │   ├── app/
 │   │   ├── main.py                  # FastAPI app entry point
-│   │   ├── config.py                # Environment variable management
-│   │   ├── database.py              # SQLAlchemy engine and session setup
+│   │   ├── config.py                # Environment configuration
+│   │   ├── database.py              # Database setup
 │   │   │
-│   │   ├── models/                  # Database table definitions
-│   │   │   ├── user.py              # User model
-│   │   │   ├── profile.py           # StudentProfile model
-│   │   │   ├── session.py           # LearningSession model
-│   │   │   └── quiz.py              # QuizSession and QuizQuestion models
+│   │   ├── models/                  # Database models
+│   │   │   ├── user.py
+│   │   │   ├── profile.py
+│   │   │   ├── session.py
+│   │   │   └── quiz.py
 │   │   │
-│   │   ├── routes/                  # API endpoint handlers
-│   │   │   ├── learning.py          # Learning and explanation routes
-│   │   │   ├── profile.py           # Profile management routes
-│   │   │   └── quiz.py              # Quiz generation and submission routes
+│   │   ├── routes/                  # API endpoints
+│   │   │   ├── learning.py
+│   │   │   ├── profile.py
+│   │   │   └── quiz.py
 │   │   │
-│   │   ├── schemas/                 # Pydantic request/response models
-│   │   │   ├── learning.py          # Learning schemas
-│   │   │   ├── profile.py           # Profile schemas
-│   │   │   └── quiz.py              # Quiz schemas
+│   │   ├── schemas/                 # Pydantic models
+│   │   │   ├── learning.py
+│   │   │   ├── profile.py
+│   │   │   └── quiz.py
 │   │   │
-│   │   └── services/                # Business logic
+│   │   └── services/
 │   │       └── ai_service.py        # Groq AI integration
 │   │
-│   ├── requirements.txt             # Python dependencies
-│   ├── .env.example                 # Environment variables template
-│   ├── .gitignore                   # Python gitignore rules
-│   └── genai_tutor.db               # SQLite database (auto-created)
+│   ├── requirements.txt
+│   ├── .env.example
+│   └── genai_tutor.db               # SQLite database
 │
 ├── frontend/
 │   ├── app/
-│   │   ├── page.tsx                 # Main dashboard with 4 visualizers
-│   │   ├── layout.tsx               # Root layout
-│   │   └── globals.css              # Global styles and animations
+│   │   ├── page.tsx                 # Main dashboard
+│   │   ├── layout.tsx
+│   │   └── globals.css
 │   │
 │   └── src/
 │       ├── components/
 │       │   ├── ProfileSetup/
-│       │   │   └── index.tsx        # 3-step profile setup wizard
+│       │   │   └── index.tsx
 │       │   ├── QuizPlayer/
-│       │   │   └── index.tsx        # Quiz taking interface
+│       │   │   └── index.tsx
 │       │   ├── QuizResults/
-│       │   │   └── index.tsx        # Quiz results and review
+│       │   │   └── index.tsx
+│       │   ├── AnalyticsDashboard/
+│       │   │   └── index.tsx        # Analytics with charts
 │       │   └── Visualizations/
-│       │       ├── ArrayVisualizer.tsx       # Interactive array
-│       │       ├── StackVisualizer.tsx       # Interactive stack
-│       │       ├── QueueVisualizer.tsx       # Interactive queue
-│       │       └── LinkedListVisualizer.tsx  # Interactive linked list
+│       │       ├── ArrayVisualizer.tsx
+│       │       ├── StackVisualizer.tsx
+│       │       ├── QueueVisualizer.tsx
+│       │       ├── LinkedListVisualizer.tsx
+│       │       └── BinaryTreeVisualizer.tsx
 │       └── services/
-│           └── api.ts               # Type-safe API client
+│           └── api.ts
 │
 └── README.md
 ```
@@ -247,7 +262,7 @@ genai-tutor/
 ### Backend (`backend/.env`)
 
 ```env
-# FREE AI API Key — get at console.groq.com
+# FREE AI API Key from console.groq.com
 GROQ_API_KEY=gsk_your_key_here
 
 # Database
@@ -273,156 +288,90 @@ NEXT_PUBLIC_API_URL=http://localhost:8000
 ## 🗄️ Database Schema
 
 ### Users Table
-```
-users
-├── id (UUID, Primary Key)
-├── username (Unique)
-├── email (Unique)
-├── is_active
-└── created_at, updated_at
-```
+- id, username, email, is_active, timestamps
 
 ### Student Profiles Table
-```
-student_profiles
-├── id (UUID, Primary Key)
-├── user_id (FK → users)
-├── proficiency_level (beginner/intermediate/advanced)
-├── learning_style (visual/hands-on/conceptual)
-├── preferred_topics (JSON Array)
-├── total_sessions
-└── created_at, updated_at
-```
+- id, user_id, proficiency_level, learning_style, preferred_topics, total_sessions, timestamps
 
 ### Learning Sessions Table
-```
-learning_sessions
-├── id (UUID, Primary Key)
-├── user_id (FK → users)
-├── topic
-├── level
-├── explanation (full AI response)
-├── word_count
-├── estimated_reading_time
-└── created_at
-```
+- id, user_id, topic, level, explanation, word_count, estimated_reading_time, created_at
 
 ### Quiz Sessions Table
-```
-quiz_sessions
-├── id (UUID, Primary Key)
-├── user_id (FK → users)
-├── topic
-├── level
-├── total_questions
-├── correct_answers
-├── score (percentage)
-├── time_taken (seconds)
-├── completed
-└── started_at, completed_at
-```
+- id, user_id, topic, level, total_questions, correct_answers, score, time_taken, completed, timestamps
 
 ### Quiz Questions Table
-```
-quiz_questions
-├── id (UUID, Primary Key)
-├── quiz_session_id (FK → quiz_sessions)
-├── question_number
-├── question_text
-├── options (JSON: A, B, C, D)
-├── correct_answer
-├── user_answer
-├── is_correct
-├── difficulty (easy/medium/hard)
-├── concept
-└── explanation
-```
+- id, quiz_session_id, question_number, question_text, options (JSON), correct_answer, user_answer, is_correct, difficulty, concept, explanation
 
 ---
 
-## 🧪 Testing
+## 🧪 Testing the Application
 
-### Backend
-
+### 1. Backend Testing
 ```bash
-# Test Groq API connection
 cd backend
-python test_groq.py
-
-# Start server and test endpoints
 uvicorn app.main:app --reload
-# Then visit: http://localhost:8000/docs
+# Visit: http://localhost:8000/docs
 ```
 
-### Frontend
-
+### 2. Frontend Testing
 ```bash
 cd frontend
 npm run dev
-# Then visit: http://localhost:3000
+# Visit: http://localhost:3000
 ```
 
-### Test All Visualizers
+### 3. Test All Features
 
-1. Create a profile or log in
-2. Enter any topic (e.g., "data structures")
-3. Click "Explain Topic"
-4. Scroll down to see **four visualizer buttons** in a grid:
-   - 📊 **Array** — Contiguous memory, index-based access
-   - 🥞 **Stack** — LIFO operations, push/pop/peek
-   - 🎫 **Queue** — FIFO operations, enqueue/dequeue
-   - 🔗 **Linked List** — Dynamic nodes with pointers ← NEW!
-5. Click any button to open the interactive visualizer
-6. Experiment with all operations and watch the animations!
+**Profile Setup:**
+- Create a profile with your details
+- Choose proficiency level and learning style
+
+**Learning:**
+- Enter a topic (e.g., "arrays", "linked lists")
+- Read AI-generated explanation
+- Try practice questions
+
+**Visualizations:**
+- Click any of the 5 visualizer buttons
+- Experiment with all operations
+- Watch smooth animations
+
+**Quizzes:**
+- Generate a quiz on any topic
+- Answer questions within 5 minutes
+- Review results and explanations
+
+**Analytics:**
+- Click "📊 Analytics" button
+- View your performance charts
+- Read AI-generated insights
 
 ---
 
-## 📈 Development Progress
+## 📈 Development Journey
 
-### ✅ Completed
+### ✅ Completed Steps
 
-- [x] **Step 1** — Project setup (FastAPI backend + Next.js frontend)
-- [x] **Step 2** — FREE AI integration with Groq (Llama 3.3 70B)
-  - [x] LangChain orchestration
-  - [x] Adaptive topic explanations by level
-  - [x] Personalized greeting generation
-  - [x] Practice question generation
+- [x] **Step 1** — Project setup (FastAPI + Next.js)
+- [x] **Step 2** — FREE AI integration with Groq
 - [x] **Step 3** — Database and user profiles
-  - [x] SQLite database with SQLAlchemy ORM
-  - [x] User, StudentProfile, LearningSession models
-  - [x] Full profile CRUD API endpoints
-  - [x] 3-step profile setup wizard (UI)
-  - [x] Learning dashboard with stats
-  - [x] Session persistence and history tracking
-- [x] **Step 4** — Quiz system with AI-generated questions
-  - [x] QuizSession and QuizQuestion models
-  - [x] AI-powered quiz generation with adaptive difficulty
-  - [x] Multiple choice questions (4 options per question)
-  - [x] Quiz submission and automatic grading
-  - [x] Score calculation with performance breakdown
-  - [x] Answer explanations for learning
-  - [x] Quiz history and results tracking
-  - [x] Quiz player UI with timer
-  - [x] Quiz results UI with detailed review
-- [x] **Step 5A-D** — Data Structure Visualizations (4 complete!)
-  - [x] Array Visualizer with contiguous memory demonstration
-  - [x] Stack Visualizer with LIFO operations
-  - [x] Queue Visualizer with FIFO operations
-  - [x] Linked List Visualizer with node pointers and traversal
-  - [x] Visualizer selector UI with 4 gradient buttons
-  - [x] Framer Motion animations for all operations
-  - [x] Visual highlighting and real-time feedback
-  - [x] Memory addresses and position indicators
-  - [x] Educational tooltips and key concepts
-  - [x] Time complexity demonstrations
-  - [x] **19 total operations** across 4 visualizers
+- [x] **Step 4** — Quiz system with AI questions
+- [x] **Step 5** — Data structure visualizations (5 complete!)
+  - [x] Array Visualizer
+  - [x] Stack Visualizer
+  - [x] Queue Visualizer
+  - [x] Linked List Visualizer
+  - [x] Binary Tree Visualizer
+- [x] **Step 6** — Analytics Dashboard with charts
 
-### 🔲 In Progress / Coming Next
+### 🔮 Future Enhancements
 
-- [ ] **Step 5E** — Binary Tree Visualizer (hierarchical structure with traversals)
-- [ ] **Step 6** — Analytics dashboard with charts and progress tracking
-- [ ] **Step 7** — User authentication (JWT tokens)
-- [ ] **Step 8** — Deployment (Vercel + Railway)
+- [ ] User authentication with JWT tokens
+- [ ] Spaced repetition system for reviews
+- [ ] More data structures (Graphs, Heaps)
+- [ ] Code execution environment
+- [ ] Deployment to production (Vercel + Railway)
+- [ ] Mobile app version
 
 ---
 
@@ -431,120 +380,94 @@ npm run dev
 | Service | Cost |
 |---------|------|
 | Groq API (Llama 3.3 70B) | **$0.00 / month** |
-| SQLite (development) | **$0.00** |
+| SQLite Database | **$0.00** |
 | Framer Motion | **$0.00** |
-| Next.js (Vercel — coming soon) | **$0.00** |
-| **Total** | **$0.00** 🎉 |
+| Recharts | **$0.00** |
+| Hosting (Future) | **~$0-5 / month** |
+| **Total Current** | **$0.00** 🎉 |
 
 ---
 
 ## 🎯 Key Features Showcase
 
-### Interactive Visualizations (4 Complete!)
+### Analytics Dashboard 📊
+- **5 Stat Cards**: Total quizzes, average score, topics studied, best score, improvement rate
+- **Line Chart**: Score progression over time showing learning trends
+- **Bar Chart**: Average performance by topic
+- **Radar Chart**: Performance breakdown by difficulty (easy/medium/hard)
+- **Recent Quizzes Table**: Detailed history with scores, time, and dates
+- **AI Insights**: Personalized recommendations based on performance
 
-#### Visualizer Selector
-- **Beautiful Grid UI** — Four gradient buttons with emojis and descriptions
-- **Responsive Layout** — 2x2 on mobile, 4 columns on desktop
-- **User Choice** — Select between Array, Stack, Queue, or Linked List
-- **Easy Access** — Available after every topic explanation
+### Data Structure Visualizations
 
-#### Array Visualizer 📊
-- **Operations**: Push, Pop, Insert at Index, Delete at Index, Access Element
-- **Key Features**: 
-  - Memory addresses displayed (simulated hex values)
-  - Index numbers for each element
-  - O(1) access time demonstration
-  - Smooth add/remove animations
-- **Educational Value**: Shows contiguous memory and index-based access principles
+| Visualizer | Operations | Animations | Key Learning |
+|------------|-----------|------------|--------------|
+| **Array** 📊 | Push, Pop, Insert, Delete, Access | Element sliding, highlighting | Contiguous memory, O(1) access |
+| **Stack** 🥞 | Push, Pop, Peek, isEmpty | Vertical stacking | LIFO principle, function calls |
+| **Queue** 🎫 | Enqueue, Dequeue, Front, Rear | Horizontal flow | FIFO principle, task scheduling |
+| **Linked List** 🔗 | Insert Head/Tail, Delete, Search, Traverse | Pointer connections, traversal | Dynamic memory, pointers |
+| **Binary Tree** 🌳 | Insert, Delete, 3 Traversals | Node placement, highlighting | BST property, recursion |
 
-#### Stack Visualizer 🥞
-- **Operations**: Push (add to top), Pop (remove from top), Peek (view top), isEmpty (check if empty)
-- **Key Features**:
-  - Vertical stacking visualization
-  - Top element highlighting
-  - Position labels for each element
-  - Real-time size and status display
-- **Educational Value**: Demonstrates LIFO (Last In, First Out) principle with visual feedback
-
-#### Queue Visualizer 🎫
-- **Operations**: Enqueue (add to rear), Dequeue (remove from front), Front (view first), Rear (view last), isEmpty
-- **Key Features**:
-  - Horizontal line visualization
-  - Front and rear indicators
-  - Direction arrows (IN → and ← OUT)
-  - Real-time tracking of both ends
-- **Educational Value**: Demonstrates FIFO (First In, First Out) principle like a real waiting line
-
-#### Linked List Visualizer 🔗 (NEW!)
-- **Operations**: Insert at Head, Insert at Tail, Delete Node, Search, Traverse
-- **Key Features**:
-  - Individual node boxes with values
-  - Visual arrows (→) showing pointer connections
-  - Head and Tail indicators
-  - Animated traversal during search
-  - "next" pointer labels on each node
-  - Null pointer at end of list
-  - Position indices for each node
-- **Educational Value**: Shows dynamic memory allocation, pointer concepts, and non-contiguous storage
+**Total: 25+ operations with smooth animations**
 
 ### Quiz System
-- **Adaptive Difficulty**: Questions adjust based on student level (beginner/intermediate/advanced)
-- **Multiple Choice**: 4 options per question with only one correct answer
-- **Timer**: 5-minute countdown with auto-submit
-- **Instant Grading**: Automatic scoring with percentage calculation
-- **Performance Analytics**: Breakdown by difficulty (easy/medium/hard)
-- **Learning-Focused**: Detailed explanations for every answer
-- **Progress Tracking**: Complete quiz history saved to database
+- AI-generated questions adapted to your level
+- Multiple choice with 4 options
+- 5-minute timer with auto-submit
+- Instant grading and feedback
+- Performance analytics by difficulty
+- Complete history tracking
 
 ### Learning Experience
-- **Personalized**: Content adapts to individual student level
-- **Comprehensive**: Explanations include analogies, examples, and key takeaways
-- **Interactive**: Practice questions, quizzes, and four visual learning tools
-- **Visual**: Complete data structure visualizations with real-time animations
-- **Tracked**: Every session saved with timestamps and metadata
-- **Engaging**: Clean, modern UI with smooth transitions and gradient designs
+- Personalized AI explanations by level
+- Reading time estimates
+- Practice questions with hints
+- Session tracking and history
+- Recent topics quick access
+- Profile persistence
 
 ---
 
-## 🎨 Visualization Features
+## 🎨 Technology Highlights
 
-### Available Visualizers
+### Frontend Excellence
+- **TypeScript**: Full type safety across the application
+- **Tailwind CSS**: Responsive design with utility classes
+- **Framer Motion**: 60fps animations for all visualizations
+- **Recharts**: Beautiful, responsive charts
+- **Component Architecture**: Modular and reusable
 
-| Visualizer | Operations | Key Concepts | Time Complexity | Status |
-|------------|-----------|--------------|-----------------|--------|
-| **Array** 📊 | Push, Pop, Insert, Delete, Access (5) | Contiguous memory, Index-based | Access: O(1), Insert/Delete: O(n) | ✅ Complete |
-| **Stack** 🥞 | Push, Pop, Peek, isEmpty (4) | LIFO, Top-only access | All: O(1) | ✅ Complete |
-| **Queue** 🎫 | Enqueue, Dequeue, Front, Rear, isEmpty (5) | FIFO, Front/Rear pointers | All: O(1) | ✅ Complete |
-| **Linked List** 🔗 | Insert Head/Tail, Delete, Search, Traverse (5) | Nodes, Pointers, Dynamic memory | Access/Search: O(n), Insert/Delete: O(1) | ✅ Complete |
-| **Binary Tree** 🌳 | Insert, Delete, Traversals | Parent-child, Recursive | Search: O(log n) avg | 🔄 Coming Soon |
+### Backend Excellence
+- **Async/Await**: Non-blocking API operations
+- **SQLAlchemy ORM**: Clean database interactions
+- **Pydantic Validation**: Type-safe request/response models
+- **LangChain**: Efficient AI prompt management
+- **RESTful API**: Well-structured endpoints
 
-**Total: 19 operations across 4 visualizers**
-
-### Common Features Across All Visualizers
-- ✨ Smooth Framer Motion animations with spring physics
-- 🎯 Visual highlighting during operations with color transitions
-- 📊 Real-time status updates and operation feedback messages
-- ⏱️ Time complexity demonstrations and explanations
-- 🔄 Reset functionality to restore initial state
-- 💡 Educational tooltips and key concept explanations
-- 🎨 Beautiful gradient color schemes unique to each type
-- 📍 Position indicators (indices, top/bottom, front/rear, head/tail)
-- 🖱️ Interactive controls with input validation
-- 📱 Responsive design for all screen sizes
-- 🔗 Pointer visualizations (for Linked List)
-- 🎬 Animated traversals and searches
+### AI Integration
+- **Groq API**: Fast, free AI inference
+- **Adaptive Prompts**: Level-based content generation
+- **JSON Parsing**: Structured quiz generation
+- **Error Handling**: Robust AI response processing
 
 ---
 
 ## 🤝 Contributing
 
-This is a learning project built step by step. Contributions, issues, and feature requests are welcome!
+This project was built as a learning experience and portfolio piece. Contributions, issues, and feature requests are welcome!
+
+### Ways to Contribute
+- Report bugs or issues
+- Suggest new features or visualizations
+- Improve documentation
+- Optimize performance
+- Add new data structures
 
 ---
 
 ## 📝 License
 
-MIT License — feel free to use this project for learning purposes.
+MIT License — free to use for learning and personal projects.
 
 ---
 
@@ -552,47 +475,72 @@ MIT License — feel free to use this project for learning purposes.
 
 **Anshita Tripathi**
 - GitHub: [@AnshitaTripathi](https://github.com/AnshitaTripathi)
+- Project: [GenAI Tutor](https://github.com/AnshitaTripathi/GenAi-Tutor)
 
 ---
 
 ## 🙏 Acknowledgments
 
-- AI orchestration by [LangChain](https://langchain.com/)
-- Free AI inference by [Groq](https://groq.com/)
-- Framework by [FastAPI](https://fastapi.tiangolo.com/) and [Next.js](https://nextjs.org/)
-- Animations by [Framer Motion](https://www.framer.com/motion/)
+- **AI orchestration**: [LangChain](https://langchain.com/)
+- **Free AI inference**: [Groq](https://groq.com/)
+- **Web frameworks**: [FastAPI](https://fastapi.tiangolo.com/) and [Next.js](https://nextjs.org/)
+- **Animations**: [Framer Motion](https://www.framer.com/motion/)
+- **Charts**: [Recharts](https://recharts.org/)
 
 ---
 
-## 📸 Features in Action
+## 📊 Project Stats
 
-### Profile Setup
-Multi-step wizard with level and learning style selection
-
-### Learning Dashboard
-Personalized greeting, stats, topic exploration, and recent history
-
-### Quiz Interface
-Timer-based multiple choice questions with progress tracking and smooth animations
-
-### Quiz Results
-Detailed score breakdown with answer review and explanations
-
-### Visualizer Selector
-Four beautiful gradient buttons in a responsive grid layout
-
-### Array Visualizer
-Contiguous memory layout with indices, memory addresses, and smooth animations
-
-### Stack Visualizer
-Vertical LIFO visualization with push/pop animations and top highlighting
-
-### Queue Visualizer
-Horizontal FIFO visualization with front/rear indicators and directional flow
-
-### Linked List Visualizer
-Dynamic nodes connected by visual arrows, showing pointer-based navigation and non-contiguous memory
+- **Lines of Code**: ~8,000+
+- **Components**: 15+
+- **API Endpoints**: 11
+- **Database Tables**: 5
+- **Visualizers**: 5 complete
+- **Operations**: 25+
+- **Charts**: 3 types
+- **Development Time**: Built step-by-step over multiple sessions
+- **Cost**: $0.00 (completely free!)
 
 ---
 
-**Note**: This project is under active development. Binary Tree visualization and Analytics Dashboard coming soon! Star ⭐ the repo to follow progress!
+## 🎓 What I Learned
+
+Building this project taught me:
+- Full-stack development with modern tools
+- AI integration and prompt engineering
+- Data structure implementation and visualization
+- State management in React
+- Database design and ORM usage
+- RESTful API development
+- Animation and chart libraries
+- TypeScript and type safety
+- Responsive design principles
+- Git workflow and version control
+
+---
+
+## 🚀 Getting Started Guide
+
+### For Beginners
+1. Clone the repository
+2. Follow the Quick Start guide above
+3. Get your free Groq API key
+4. Start the backend and frontend
+5. Create your profile and start learning!
+
+### For Developers
+1. Explore the codebase structure
+2. Check out the API documentation
+3. Review the component architecture
+4. Understand the AI integration
+5. Contribute or fork for your own projects!
+
+---
+
+**⭐ Star this repo if you find it helpful!**
+
+**🔗 Live Demo**: Coming soon (Deployment in progress)
+
+---
+
+**Note**: This is a complete, functional learning platform built from scratch as a portfolio project. It demonstrates full-stack development skills, AI integration, data visualization, and modern web development practices.
