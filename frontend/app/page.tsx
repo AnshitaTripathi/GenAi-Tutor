@@ -7,6 +7,7 @@ import ArrayVisualizer from '@/components/Visualizations/ArrayVisualizer';
 import StackVisualizer from '@/components/Visualizations/StackVisualizer';
 import QueueVisualizer from '@/components/Visualizations/QueueVisualizer';
 import LinkedListVisualizer from '@/components/Visualizations/LinkedListVisualizer';
+import BinaryTreeVisualizer from '@/components/Visualizations/BinaryTreeVisualizer';
 
 export default function Home() {
   const [user, setUser] = useState<any>(null);
@@ -17,9 +18,8 @@ export default function Home() {
   const [greeting, setGreeting] = useState('');
   const [showVisualizer, setShowVisualizer] = useState(false);
   const [visualizerTopic, setVisualizerTopic] = useState('');
-  const [visualizerType, setVisualizerType] = useState<'array' | 'stack' | 'queue' | 'linkedlist'>('array');
+  const [visualizerType, setVisualizerType] = useState<'array' | 'stack' | 'queue' | 'linkedlist' | 'binarytree'>('array');
 
-  // Check if user already has a profile saved
   useEffect(() => {
     const savedUser = localStorage.getItem('genai_tutor_user');
     if (savedUser) {
@@ -27,7 +27,7 @@ export default function Home() {
       setUser(parsed);
       generateGreeting(parsed.user.username, parsed.profile.proficiency_level);
     }
-    setLoading(false);  
+    setLoading(false);
   }, []);
 
   const generateGreeting = async (name: string, level: string) => {
@@ -94,7 +94,7 @@ export default function Home() {
     <main className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 p-6">
       <div className="max-w-4xl mx-auto">
 
-        {/* Header with user info */}
+        {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 bg-indigo-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
@@ -116,14 +116,14 @@ export default function Home() {
           </button>
         </div>
 
-        {/* AI Greeting */}
+        {/* Greeting */}
         {greeting && (
           <div className="bg-white rounded-2xl shadow-sm border border-indigo-100 p-6 mb-6">
             <p className="text-lg text-gray-700 leading-relaxed">💬 {greeting}</p>
           </div>
         )}
 
-        {/* Stats Row */}
+        {/* Stats */}
         <div className="grid grid-cols-3 gap-4 mb-8">
           <div className="bg-white rounded-xl p-4 shadow-sm text-center">
             <div className="text-3xl font-bold text-indigo-600">{user.profile.total_sessions}</div>
@@ -161,7 +161,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Explanation Result */}
+        {/* Explanation */}
         {explanation && (
           <div className="space-y-4 mb-6">
             <div className="bg-white rounded-2xl shadow-sm border border-green-100 p-8">
@@ -186,41 +186,45 @@ export default function Home() {
                 <p className="text-sm text-gray-600">Choose a data structure to visualize and interact with</p>
               </div>
               
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
                 <button
                   onClick={() => { setVisualizerType('array'); setShowVisualizer(true); }}
-                  className="px-4 py-6 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-bold hover:shadow-lg transition-all hover:scale-105 flex flex-col items-center justify-center gap-2"
+                  className="px-3 py-5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-bold hover:shadow-lg transition-all hover:scale-105 flex flex-col items-center justify-center gap-1"
                 >
-                  <span className="text-3xl">📊</span>
-                  <span className="text-base">Array</span>
-                  <span className="text-xs opacity-80">Index-based</span>
+                  <span className="text-2xl">📊</span>
+                  <span className="text-sm">Array</span>
                 </button>
 
                 <button
                   onClick={() => { setVisualizerType('stack'); setShowVisualizer(true); }}
-                  className="px-4 py-6 bg-gradient-to-r from-orange-600 to-red-600 text-white rounded-xl font-bold hover:shadow-lg transition-all hover:scale-105 flex flex-col items-center justify-center gap-2"
+                  className="px-3 py-5 bg-gradient-to-r from-orange-600 to-red-600 text-white rounded-xl font-bold hover:shadow-lg transition-all hover:scale-105 flex flex-col items-center justify-center gap-1"
                 >
-                  <span className="text-3xl">🥞</span>
-                  <span className="text-base">Stack</span>
-                  <span className="text-xs opacity-80">LIFO</span>
+                  <span className="text-2xl">🥞</span>
+                  <span className="text-sm">Stack</span>
                 </button>
 
                 <button
                   onClick={() => { setVisualizerType('queue'); setShowVisualizer(true); }}
-                  className="px-4 py-6 bg-gradient-to-r from-teal-600 to-cyan-600 text-white rounded-xl font-bold hover:shadow-lg transition-all hover:scale-105 flex flex-col items-center justify-center gap-2"
+                  className="px-3 py-5 bg-gradient-to-r from-teal-600 to-cyan-600 text-white rounded-xl font-bold hover:shadow-lg transition-all hover:scale-105 flex flex-col items-center justify-center gap-1"
                 >
-                  <span className="text-3xl">🎫</span>
-                  <span className="text-base">Queue</span>
-                  <span className="text-xs opacity-80">FIFO</span>
+                  <span className="text-2xl">🎫</span>
+                  <span className="text-sm">Queue</span>
                 </button>
 
                 <button
                   onClick={() => { setVisualizerType('linkedlist'); setShowVisualizer(true); }}
-                  className="px-4 py-6 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-bold hover:shadow-lg transition-all hover:scale-105 flex flex-col items-center justify-center gap-2"
+                  className="px-3 py-5 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-bold hover:shadow-lg transition-all hover:scale-105 flex flex-col items-center justify-center gap-1"
                 >
-                  <span className="text-3xl">🔗</span>
-                  <span className="text-base">Linked List</span>
-                  <span className="text-xs opacity-80">Pointers</span>
+                  <span className="text-2xl">🔗</span>
+                  <span className="text-sm">Linked List</span>
+                </button>
+
+                <button
+                  onClick={() => { setVisualizerType('binarytree'); setShowVisualizer(true); }}
+                  className="px-3 py-5 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-xl font-bold hover:shadow-lg transition-all hover:scale-105 flex flex-col items-center justify-center gap-1"
+                >
+                  <span className="text-2xl">🌳</span>
+                  <span className="text-sm">Tree</span>
                 </button>
               </div>
             </div>
@@ -260,6 +264,9 @@ export default function Home() {
         )}
         {showVisualizer && visualizerType === 'linkedlist' && (
           <LinkedListVisualizer onClose={() => setShowVisualizer(false)} />
+        )}
+        {showVisualizer && visualizerType === 'binarytree' && (
+          <BinaryTreeVisualizer onClose={() => setShowVisualizer(false)} />
         )}
 
       </div>
