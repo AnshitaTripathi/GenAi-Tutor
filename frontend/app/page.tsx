@@ -9,6 +9,8 @@ import QueueVisualizer from '@/components/Visualizations/QueueVisualizer';
 import LinkedListVisualizer from '@/components/Visualizations/LinkedListVisualizer';
 import BinaryTreeVisualizer from '@/components/Visualizations/BinaryTreeVisualizer';
 import AnalyticsDashboard from '@/components/AnalyticsDashboard';
+import QuizPlayer from '@/components/QuizPlayer';
+import QuizResults from '@/components/QuizResults';
 
 export default function Home() {
   const [user, setUser] = useState<any>(null);
@@ -18,9 +20,11 @@ export default function Home() {
   const [aiLoading, setAiLoading] = useState(false);
   const [greeting, setGreeting] = useState('');
   const [showVisualizer, setShowVisualizer] = useState(false);
-  const [visualizerTopic, setVisualizerTopic] = useState('');
   const [visualizerType, setVisualizerType] = useState<'array' | 'stack' | 'queue' | 'linkedlist' | 'binarytree'>('array');
   const [showAnalytics, setShowAnalytics] = useState(false);
+  const [showQuiz, setShowQuiz] = useState(false);
+  const [showQuizResults, setShowQuizResults] = useState(false);
+  const [quizResults, setQuizResults] = useState<any>(null);
 
   useEffect(() => {
     const savedUser = localStorage.getItem('genai_tutor_user');
@@ -49,17 +53,37 @@ export default function Home() {
     generateGreeting(data.user.username, data.profile.proficiency_level);
   };
 
+  const refreshUserData = async () => {
+    try {
+      const profileRes = await fetch(`http://localhost:8000/api/profile/${user.user.username}`);
+      const profileData = await profileRes.json();
+      
+      const updatedUser = {
+        user: user.user,
+        profile: profileData.profile,
+        total_topics_studied: profileData.total_topics_studied,
+        recent_sessions: profileData.recent_sessions
+      };
+      
+      localStorage.setItem('genai_tutor_user', JSON.stringify(updatedUser));
+      setUser(updatedUser);
+    } catch (err) {
+      console.error('Error refreshing user data:', err);
+    }
+  };
+
   const handleExplain = async () => {
     if (!topic) return;
     setAiLoading(true);
     try {
       const res = await fetch(
-        `http://localhost:8000/api/learning/explain?username=${user.user.username}`,
+        `http://localhost:8000/api/learning/explain`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            topic,
+            username: user.user.username,
+            topic: topic,
             level: user.profile.proficiency_level,
             learning_style: user.profile.learning_style
           })
@@ -67,10 +91,64 @@ export default function Home() {
       );
       const data = await res.json();
       setExplanation(data);
+      
+      // Refresh user data to update stats
+      await refreshUserData();
+      
     } catch (err) {
+      console.error('Error explaining topic:', err);
       alert('Error! Is backend running?');
     }
     setAiLoading(false);
+  };
+
+  const handleQuizComplete = async (quizId: string, answers: Record<number, string>, timeTaken: number) => {
+    try {
+      console.log('Submitting quiz with:', { quizId, answers, timeTaken });
+      
+      // Submit quiz
+      const response = await fetch('http://localhost:8000/api/quiz/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          quiz_session_id: quizId,
+          answers: answers,
+          time_taken: timeTaken
+        })
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Quiz submission failed:', errorText);
+        throw new Error('Failed to submit quiz');
+      }
+
+      const results = await response.json();
+      console.log('Quiz Results received:', results);
+      
+      // Validate results structure
+      if (!results || !results.questions) {
+        console.error('Invalid results structure:', results);
+        throw new Error('Invalid quiz results format');
+      }
+      
+      setQuizResults(results);
+      setShowQuiz(false);
+      setShowQuizResults(true);
+      
+      // Refresh user data
+      await refreshUserData();
+    } catch (error) {
+      console.error('Error submitting quiz:', error);
+      alert('Failed to submit quiz. Please check the console and try again.');
+      setShowQuiz(false);
+    }
+  };
+
+  const handleRetakeQuiz = () => {
+    setShowQuizResults(false);
+    setQuizResults(null);
+    setShowQuiz(true);
   };
 
   const handleLogout = () => {
@@ -115,7 +193,6 @@ export default function Home() {
           </div>
           
           <div className="flex items-center gap-3">
-            {/* Analytics Button */}
             <button
               onClick={() => setShowAnalytics(true)}
               className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition"
@@ -140,15 +217,15 @@ export default function Home() {
         {/* Stats */}
         <div className="grid grid-cols-3 gap-4 mb-8">
           <div className="bg-white rounded-xl p-4 shadow-sm text-center">
-            <div className="text-3xl font-bold text-indigo-600">{user.profile.total_sessions}</div>
+            <div className="text-3xl font-bold text-indigo-600">{user.profile?.total_sessions || 0}</div>
             <div className="text-sm text-gray-500 mt-1">Sessions</div>
           </div>
           <div className="bg-white rounded-xl p-4 shadow-sm text-center">
-            <div className="text-3xl font-bold text-green-600">{user.total_topics_studied}</div>
+            <div className="text-3xl font-bold text-green-600">{user.total_topics_studied || 0}</div>
             <div className="text-sm text-gray-500 mt-1">Topics Studied</div>
           </div>
           <div className="bg-white rounded-xl p-4 shadow-sm text-center">
-            <div className="text-3xl font-bold text-purple-600 capitalize">{user.profile.learning_style}</div>
+            <div className="text-3xl font-bold text-purple-600 capitalize">{user.profile?.learning_style || 'visual'}</div>
             <div className="text-sm text-gray-500 mt-1">Learning Style</div>
           </div>
         </div>
@@ -192,6 +269,15 @@ export default function Home() {
                 </div>
               </div>
             </div>
+
+            {/* Quiz Button */}
+            <button
+              onClick={() => setShowQuiz(true)}
+              className="w-full bg-gradient-to-r from-green-600 to-teal-600 text-white py-4 rounded-xl font-bold text-lg hover:shadow-lg transition flex items-center justify-center gap-2"
+            >
+              <span>📝</span>
+              <span>Take Quiz on {explanation.topic}</span>
+            </button>
 
             {/* Visualizer Selector */}
             <div className="bg-white rounded-2xl shadow-sm border border-purple-100 p-6">
@@ -288,6 +374,41 @@ export default function Home() {
           <AnalyticsDashboard
             username={user.user.username}
             onClose={() => setShowAnalytics(false)}
+          />
+        )}
+
+        {/* Quiz Player */}
+        {showQuiz && explanation && (
+          <QuizPlayer
+            username={user.user.username}
+            topic={explanation.topic}
+            level={user.profile.proficiency_level}
+            onComplete={handleQuizComplete}
+            onClose={() => setShowQuiz(false)}
+          />
+        )}
+
+        {/* Quiz Results - FIXED */}
+        {showQuizResults && quizResults && quizResults.questions && (
+          <QuizResults
+            score={quizResults.score || 0}
+            totalQuestions={quizResults.total_questions || 0}
+            correctAnswers={quizResults.correct_answers || 0}
+            timeTaken={quizResults.time_taken || 0}
+            questions={quizResults.questions || []}
+            userAnswers={
+              Array.isArray(quizResults.questions)
+                ? quizResults.questions.reduce((acc: any, q: any, idx: number) => {
+                    acc[idx] = q.user_answer || '';
+                    return acc;
+                  }, {})
+                : {}
+            }
+            onClose={() => {
+              setShowQuizResults(false);
+              setQuizResults(null);
+            }}
+            onRetake={handleRetakeQuiz}
           />
         )}
 
