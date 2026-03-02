@@ -1,53 +1,47 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .config import settings
-from .database import engine, Base
-from . import models  # Import models so tables are created
-from .models import quiz
 from .database import engine, Base
 from .routes import learning, profile, quiz
-from . import models  # This imports all models
-from .models import User, StudentProfile, LearningSession, QuizSession, QuizQuestion  # Explicit imports
 
-# Create all tables
-Base.metadata.create_all(bind=engine)
-
-# Create all database tables automatically on startup
+# Create database tables
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
-    title=f"{settings.app_name} API",
-    version="1.0.0",
-    description="AI-powered tutoring platform with Groq (Llama 3.3)"
+    title="GenAI Tutor API",
+    description="AI-powered personalized tutoring platform",
+    version="1.0.0"
 )
 
+# CORS Configuration - FIXED
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[settings.frontend_url],
+    allow_origins=[
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "http://localhost:3001",
+        "http://127.0.0.1:3001",
+    ],
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["*"],  # Allow all methods (GET, POST, PUT, DELETE, etc.)
+    allow_headers=["*"],  # Allow all headers
+    expose_headers=["*"],
 )
-
-# Include all routers
+   
+# Include routers
 app.include_router(learning.router)
 app.include_router(profile.router)
 app.include_router(quiz.router)
 
 @app.get("/")
-def root():
+async def root():
+    """Root endpoint"""
     return {
-        "message": f"Welcome to {settings.app_name}!",
-        "status": "running",
-        "database": "SQLite (connected)",
-        "ai_provider": "Groq - Llama 3.3 70B",
+        "message": "Welcome to GenAI Tutor API",
+        "version": "1.0.0",
         "docs": "/docs"
     }
 
 @app.get("/health")
-def health():
-    return {
-        "status": "healthy",
-        "database": "connected",
-        "ai": "connected"
-    }
+async def health_check():
+    """Health check endpoint"""
+    return {"status": "healthy"}
