@@ -26,7 +26,7 @@ async def generate_quiz(
     request: QuizGenerateRequest,
     db: Session = Depends(get_db)
 ):
-    """
+    """  
     Generate a new quiz for a topic.
     
     The AI creates questions based on student's level.
@@ -141,7 +141,11 @@ async def submit_quiz(
     question_results = []
     
     for question in questions:
-        user_answer = submission.answers.get(question.id)
+        # Frontend sends answers as {0: "B", 1: "A", 2: "C"}
+        # question_number is 1-based, so subtract 1 to match frontend's 0-based index
+        question_index = str(question.question_number - 1)
+        user_answer = submission.answers.get(question_index)
+        
         is_correct = user_answer == question.correct_answer
         
         # Update question with user's answer
@@ -180,7 +184,7 @@ async def submit_quiz(
         )
     
     # Calculate score
-    score = (correct_count / len(questions)) * 100
+    score = (correct_count / len(questions)) * 100 if len(questions) > 0 else 0
     passed = score >= 60
     
     # Update quiz session
@@ -239,12 +243,26 @@ async def get_quiz_history(
         QuizSession.completed_at.desc()
     ).limit(limit).all()
     
-    return [{
-        "id": q.id,
-        "topic": q.topic,
-        "score": q.score,
-        "correct_answers": q.correct_answers,
-        "total_questions": q.total_questions,
-        "time_taken": q.time_taken,
-        "completed_at": q.completed_at
-    } for q in quizzes]
+    return {
+        "quizzes": [{
+            "id": str(q.id),
+            "topic": q.topic,
+            "score": q.score,
+            "correct_answers": q.correct_answers,
+            "total_questions": q.total_questions,
+            "time_taken": q.time_taken,
+            "completed_at": q.completed_at,
+            "questions": [
+                {
+                    "question_text": qq.question_text,
+                    "user_answer": qq.user_answer,
+                    "correct_answer": qq.correct_answer,
+                    "is_correct": qq.is_correct,
+                    "difficulty": qq.difficulty,
+                    "explanation": qq.explanation,
+                    "options": json.loads(qq.options)
+                }
+                for qq in q.questions
+            ]
+        } for q in quizzes]
+    }
