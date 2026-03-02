@@ -524,7 +524,7 @@ See [LICENSE](LICENSE) file for details.
 
 ## 📸 Screenshots
 
-*(Add screenshots of your application here)*
+*(Will be adding soon...)*
 
 1. **Profile Setup** — 3-step onboarding wizard
 2. **Learning Dashboard** — Personalized greeting and stats
