@@ -17,12 +17,14 @@ class AITutorService:
 
     def __init__(self):
         #  FIX: Use correct uppercase attribute name
+        
+
         self.llm = ChatGroq(
-            groq_api_key=settings.GROQ_API_KEY,
-            model_name="llama-3.3-70b-versatile",
-            temperature=0.7,
-            max_tokens=1000,
-        )
+        groq_api_key=settings.GROQ_API_KEY,
+        model_name="mixtral-8x7b-32768",
+        temperature=0.7
+)
+        
 
         print(" AI Service initialized with Groq (FREE!)")
         print("   Model: Llama 3.3 70B Versatile")
