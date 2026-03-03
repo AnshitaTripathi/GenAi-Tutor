@@ -217,3 +217,4 @@ Return ONLY JSON.
 
 # Singleton instance
 ai_service = AITutorService()
+print("NEW AI SERVICE VERSION LOADED ")
