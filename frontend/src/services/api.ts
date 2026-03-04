@@ -1,7 +1,6 @@
 // API base URL
 // const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-const API_BASE_URL = 'https://genai-tutor-production.up.railway.app';
-
+const API_URL = 'https://genai-tutor-production.up.railway.app';
 // Types for requests and responses
 export interface GreetingRequest {
   student_name: string;
