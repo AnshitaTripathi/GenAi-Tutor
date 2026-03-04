@@ -59,7 +59,7 @@ export default function ProfileSetup({ onProfileCreated }: Props) {
     setError('');
     
     try {
-      const response = await fetch('http://localhost:8000/api/profile/create', {
+      const response = await fetch('https://genai-tutor-production.up.railway.app/api/profile/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(profile)
