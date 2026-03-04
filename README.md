@@ -549,4 +549,4 @@ If you find this project helpful, please consider giving it a star! ⭐
 
 **🚀 Built with passion as a learning journey — From concept to completion!**
 
-**💡 Perfect for portfolios, learning full-stack development, and understanding AI integration!**
+**💡 Perfect for portfolios, learning full-stack development, and understanding AI integration!**    
