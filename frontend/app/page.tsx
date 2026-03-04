@@ -55,7 +55,7 @@ export default function Home() {
 
   const refreshUserData = async () => {
     try {
-      const profileRes = await fetch(`http://localhost:8000/api/profile/${user.user.username}`);
+      const profileRes = await fetch(`https://genai-tutor-production.up.railway.app/api/learning/explain?username=${user.user.username}`);
       const profileData = await profileRes.json();
       
       const updatedUser = {
