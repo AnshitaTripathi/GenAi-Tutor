@@ -12,6 +12,9 @@ import AnalyticsDashboard from '@/components/AnalyticsDashboard';
 import QuizPlayer from '@/components/QuizPlayer';
 import QuizResults from '@/components/QuizResults';
 
+// API URL - defined once at the top
+const API_URL = 'https://genai-tutor-production.up.railway.app';
+
 export default function Home() {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -55,7 +58,7 @@ export default function Home() {
 
   const refreshUserData = async () => {
     try {
-      const profileRes = await fetch(`https://genai-tutor-production.up.railway.app/api/learning/explain?username=${user.user.username}`);
+      const profileRes = await fetch(`${API_URL}/api/profile/${user.user.username}`);
       const profileData = await profileRes.json();
       
       const updatedUser = {
@@ -77,7 +80,7 @@ export default function Home() {
     setAiLoading(true);
     try {
       const res = await fetch(
-        `http://localhost:8000/api/learning/explain`,
+        `${API_URL}/api/learning/explain`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -107,7 +110,7 @@ export default function Home() {
       console.log('Submitting quiz with:', { quizId, answers, timeTaken });
       
       // Submit quiz
-      const response = await fetch('http://localhost:8000/api/quiz/submit', {
+      const response = await fetch(`${API_URL}/api/quiz/submit`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
