@@ -3,6 +3,9 @@
 import { useState, useEffect } from 'react';
 import { LineChart, Line, BarChart, Bar, RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
+// API URL - defined once
+const API_URL = 'https://genai-tutor-production.up.railway.app';
+
 interface AnalyticsDashboardProps {
   username: string;
   onClose: () => void;
@@ -25,8 +28,8 @@ export default function AnalyticsDashboard({ username, onClose }: AnalyticsDashb
 
   const fetchAnalytics = async () => {
     try {
-      // Fetch quiz history
-      const response = await fetch(`http://localhost:8000/api/quiz/${username}/history`);
+      // Fetch quiz history - FIXED: Using Railway URL
+      const response = await fetch(`${API_URL}/api/quiz/${username}/history`);
       const data = await response.json();
       
       if (data.quizzes && data.quizzes.length > 0) {
