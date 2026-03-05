@@ -3,6 +3,9 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+// API URL - defined once
+const API_URL = 'https://genai-tutor-production.up.railway.app';
+
 interface QuizPlayerProps {
   username: string;
   topic: string;
@@ -44,7 +47,7 @@ export default function QuizPlayer({ username, topic, level, onComplete, onClose
     try {
       console.log('Generating quiz for:', { username, topic, level });
       
-      const response = await fetch('http://localhost:8000/api/quiz/generate', {
+      const response = await fetch(`${API_URL}/api/quiz/generate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
