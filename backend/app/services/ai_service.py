@@ -22,7 +22,7 @@ class AITutorService:
             temperature=0.7
         )
         
-        print("✅ AI Service initialized with Groq (FREE!)")
+        print(" AI Service initialized with Groq (FREE!)")
         print("   Model: Llama 3.3 70B Versatile")
 
     async def generate_greeting(self, student_name: str, level: str) -> str:
@@ -161,37 +161,37 @@ Format as a numbered list with hints below each question.
         else:
             difficulty_mix = "10% easy, 30% medium, 60% hard"
 
+        # FIXED: Escaped all curly braces in JSON template
         prompt = ChatPromptTemplate.from_messages([
             ("system", """You are an expert quiz generator.
 
 Generate {num_questions} multiple choice questions about {topic} for a {level} level student.
 
-Return ONLY valid JSON.
+Return ONLY valid JSON in this exact format (no markdown, no code blocks):
 
-Format:
-{
+{{
   "questions": [
-    {
+    {{
       "question_number": 1,
-      "question_text": "...",
-      "options": {
-        "A": "...",
-        "B": "...",
-        "C": "...",
-        "D": "..."
-      },
+      "question_text": "Your question here",
+      "options": {{
+        "A": "Option A text",
+        "B": "Option B text",
+        "C": "Option C text",
+        "D": "Option D text"
+      }},
       "correct_answer": "B",
       "difficulty": "medium",
-      "concept": "...",
-      "explanation": "..."
-    }
+      "concept": "Brief concept name",
+      "explanation": "Why this answer is correct"
+    }}
   ]
-}
+}}
 
 Difficulty mix: {difficulty_mix}
-Return ONLY JSON.
+Return ONLY the JSON object, nothing else.
 """),
-            ("user", "Generate the quiz in valid JSON format.")
+            ("user", "Generate the quiz now.")
         ])
 
         chain = prompt | self.llm | StrOutputParser()
@@ -203,14 +203,19 @@ Return ONLY JSON.
             "difficulty_mix": difficulty_mix
         })
 
+        # Clean up markdown code blocks if present
         result = re.sub(r'```json\s*', '', result)
         result = re.sub(r'\s*```', '', result)
         result = result.strip()
 
-        quiz_data = json.loads(result)
-        questions = quiz_data.get("questions", [])
-
-        return questions
+        try:
+            quiz_data = json.loads(result)
+            questions = quiz_data.get("questions", [])
+            return questions
+        except json.JSONDecodeError as e:
+            print(f"Failed to parse quiz JSON: {e}")
+            print(f"Raw response: {result}")
+            raise Exception(f"Failed to generate valid quiz JSON: {str(e)}")
 
 
 # Singleton instance
