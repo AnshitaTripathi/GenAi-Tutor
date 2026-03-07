@@ -8,6 +8,9 @@ A complete AI-powered personalized learning platform featuring adaptive explanat
 [![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![Next.js](https://img.shields.io/badge/Next.js-14-black.svg)](https://nextjs.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-009688.svg)](https://fastapi.tiangolo.com/)
+[![Deployed on Vercel](https://img.shields.io/badge/Frontend-Vercel-black.svg)](https://vercel.com/)
+[![Deployed on Railway](https://img.shields.io/badge/Backend-Railway-purple.svg)](https://railway.app/)
+[![PostgreSQL](https://img.shields.io/badge/Database-PostgreSQL-336791.svg)](https://www.postgresql.org/)
 
 ---
 
@@ -67,7 +70,7 @@ A complete AI-powered personalized learning platform featuring adaptive explanat
 - **LangChain** — AI orchestration and prompt management
 - **Groq API** — FREE AI inference (Llama 3.3 70B Versatile)
 - **SQLAlchemy** — ORM for database operations
-- **SQLite** — Lightweight file-based database
+- **PostgreSQL** — Production-grade relational database (hosted on Railway)
 - **Pydantic** — Data validation and serialization
 - **Uvicorn** — High-performance ASGI server
 
@@ -83,6 +86,11 @@ A complete AI-powered personalized learning platform featuring adaptive explanat
 - **Groq (FREE)** — Llama 3.3 70B Versatile model
 - **LangChain** — Prompt templates and chain orchestration
 - **Cost: $0.00** — Completely free tier (30 requests/minute, 14,400/day)
+
+### Deployment
+- **Vercel** — Frontend hosting with global CDN
+- **Railway** — Backend hosting with auto-scaling
+- **PostgreSQL** — Production database on Railway
 
 ---
 
@@ -156,6 +164,66 @@ npm run dev
 
 ---
 
+## ☁️ Deployment
+
+This project is fully deployed using **Vercel** (frontend), **Railway** (backend), and **PostgreSQL** (database).
+
+### 🖥️ Frontend — Vercel
+
+1. Push your project to GitHub
+2. Go to **[vercel.com](https://vercel.com)** and import your repository
+3. Set the root directory to `frontend`
+4. Add environment variable:
+   ```env
+   NEXT_PUBLIC_API_URL=https://your-railway-backend-url.railway.app
+   ```
+5. Click **Deploy** — Vercel handles the rest automatically!
+
+### ⚙️ Backend — Railway
+
+1. Go to **[railway.app](https://railway.app)** and create a new project
+2. Click **Deploy from GitHub repo** and select your repository
+3. Set the root directory to `backend`
+4. Add the following environment variables in Railway dashboard:
+   ```env
+   GROQ_API_KEY=gsk_your_key_here
+   DATABASE_URL=postgresql://user:password@host:port/dbname
+   APP_NAME=GenAI Tutor
+   ENVIRONMENT=production
+   SECRET_KEY=your-secret-key-here
+   FRONTEND_URL=https://your-vercel-app.vercel.app
+   ```
+5. Railway will auto-detect the Python app and deploy it
+
+### 🗄️ Database — PostgreSQL on Railway
+
+1. In your Railway project, click **+ New** → **Database** → **PostgreSQL**
+2. Railway automatically provisions the database and provides a `DATABASE_URL`
+3. Copy the `DATABASE_URL` from Railway and add it to your backend environment variables
+4. Your SQLAlchemy models will auto-create all tables on first run
+
+### 🔗 Connecting Everything
+
+After deployment, update CORS settings in `backend/app/main.py`:
+```python
+origins = [
+    "https://your-vercel-app.vercel.app",
+    "http://localhost:3000",  # for local dev
+]
+```
+
+### 💰 Production Cost Breakdown
+
+| Service | Monthly Cost |
+|---------|--------------|
+| Vercel (Frontend) | **$0** (Hobby tier) |
+| Railway (Backend) | **~$5–10/month** |
+| Railway PostgreSQL | **~$5/month** |
+| Groq API | **$0.00** |
+| **Total** | **~$10–15/month** |
+
+---
+
 ## 📚 API Documentation
 
 Once the backend is running, explore the interactive API docs:
@@ -222,7 +290,7 @@ genai-tutor/
 │   │
 │   ├── requirements.txt
 │   ├── .env.example
-│   └── genai_tutor.db                   # SQLite database (auto-created)
+│   └── genai_tutor.db                   # SQLite database (auto-created for local dev)
 │
 ├── frontend/
 │   ├── app/
@@ -262,8 +330,10 @@ genai-tutor/
 # FREE AI API Key from console.groq.com
 GROQ_API_KEY=gsk_your_key_here
 
-# Database
+# Database (SQLite for local, PostgreSQL for production)
 DATABASE_URL=sqlite:///./genai_tutor.db
+# Production:
+# DATABASE_URL=postgresql://user:password@host:port/dbname
 
 # Application
 APP_NAME=GenAI Tutor
@@ -358,7 +428,7 @@ npm run dev
 
 ### ✅ Completed Features
 
-- [x] **Step 1** — Project architecture (FastAPI + Next.js + SQLite)
+- [x] **Step 1** — Project architecture (FastAPI + Next.js + PostgreSQL)
 - [x] **Step 2** — FREE AI integration with Groq (Llama 3.3 70B)
 - [x] **Step 3** — User profiles and database design
 - [x] **Step 4** — Complete quiz system with AI generation
@@ -369,6 +439,7 @@ npm run dev
   - [x] Linked List Visualizer (pointer navigation)
   - [x] Binary Tree Visualizer (hierarchical BST)
 - [x] **Step 6** — Analytics dashboard with charts and insights
+- [x] **Step 7** — Production deployment (Vercel + Railway + PostgreSQL)
 
 ### 🔮 Future Enhancements
 
@@ -378,11 +449,12 @@ npm run dev
 - [ ] Code execution environment
 - [ ] Real-time collaboration features
 - [ ] Mobile app version (React Native)
-- [ ] Deployment to production (Vercel + Railway)
 
 ---
 
 ## 💰 Cost Breakdown
+
+### Local Development
 
 | Service | Monthly Cost |
 |---------|--------------|
@@ -390,13 +462,17 @@ npm run dev
 | SQLite Database | **$0.00** |
 | Framer Motion | **$0.00** |
 | Recharts | **$0.00** |
-| Development Hosting | **$0.00** |
 | **Total** | **$0.00** 🎉 |
 
-**Future Production Costs (Optional):**
-- Vercel (Frontend): $0-20/month
-- Railway (Backend): $0-10/month
-- PostgreSQL (Upgrade from SQLite): $0-5/month
+### Production Deployment
+
+| Service | Monthly Cost |
+|---------|--------------|
+| Vercel (Frontend) | **$0** (Hobby tier) |
+| Railway (Backend) | **~$5–10/month** |
+| Railway PostgreSQL | **~$5/month** |
+| Groq API | **$0.00** |
+| **Total** | **~$10–15/month** |
 
 ---
 
@@ -410,6 +486,7 @@ npm run dev
 - **⚡ Operations**: 25+
 - **📊 Chart Types**: 3 (Line, Bar, Radar)
 - **💵 Development Cost**: $0.00
+- **🚀 Deployed**: Vercel + Railway + PostgreSQL
 - **⏱️ Build Time**: Multiple focused sessions
 - **🎓 Learning Value**: Immense!
 
@@ -439,6 +516,12 @@ npm run dev
 - **Structured Output** — JSON parsing for quizzes
 - **Error Recovery** — Robust AI response handling
 
+### DevOps & Deployment
+- **CI/CD** — Auto-deploy on push via Vercel & Railway
+- **Environment Management** — Separate dev/prod configs
+- **Database Migrations** — SQLAlchemy auto-create tables
+- **Production Database** — PostgreSQL on Railway
+
 ---
 
 ## 🚀 Performance
@@ -448,6 +531,74 @@ npm run dev
 - ⚡ **Page Load**: <1 second
 - ⚡ **Visualizer Animations**: 60fps
 - ⚡ **Database Queries**: <50ms
+
+---
+
+## 📸 Screenshots
+
+### 🔗 Linked List Visualizer
+
+**Node structure with HEAD/tail pointers and index labels:**
+
+![Linked List Visualizer - Top](screenshots/linked_list_top.png)
+
+**Insert, delete, search operations and key concepts panel:**
+
+![Linked List Visualizer - Bottom](screenshots/linked_list_bottom.png)
+
+> Features: Insert at Head/Tail, Delete Node, Search & Traverse, live stats (Total Nodes, Head Value, Tail Value). Complexity: Access O(n) · Insert/Delete at Head O(1) · Search O(n)
+
+---
+
+### 📊 Array Visualizer
+
+**Contiguous memory layout with index labels and memory addresses:**
+
+![Array Visualizer](screenshots/array_visualizer.png)
+
+> Features: Push, Pop (Remove Last), Insert at Index, Delete at Index, Access Element. Shows live Length, Size in Memory, and Access Time O(1).
+
+---
+
+### 🥞 Stack Visualizer
+
+**LIFO stack with TOP pointer and stacked element view:**
+
+![Stack Visualizer - Top](screenshots/stack_top.png)
+
+**Push, Pop, Peek operations and utility panel:**
+
+![Stack Visualizer - Bottom](screenshots/stack_bottom.png)
+
+> Features: Push, Pop (Remove Top), Peek (View Top), isEmpty(), Reset. Live stats: Current Size, Is Empty, Top Value. Complexity: Push/Pop O(1) · Peek O(1)
+
+---
+
+### 🎫 Queue Visualizer
+
+**FIFO queue with ENQUEUE (IN) / DEQUEUE (OUT) direction labels:**
+
+![Queue Visualizer - Top](screenshots/queue_top.png)
+
+**Enqueue, Dequeue, Front/Rear operations and utility panel:**
+
+![Queue Visualizer - Bottom](screenshots/queue_bottom.png)
+
+> Features: Enqueue, Dequeue (Remove Front), Front, Rear, isEmpty(), Reset. Live stats: Current Size, Is Empty, Front Value, Rear Value. Complexity: Enqueue/Dequeue O(1) · Front/Rear Access O(1)
+
+---
+
+### 🌳 Binary Search Tree Visualizer
+
+**Hierarchical BST with 7 nodes rendered as an interactive tree:**
+
+![BST Visualizer - Top](screenshots/bst_top.png)
+
+**Insert/Delete operations and all three tree traversal modes:**
+
+![BST Visualizer - Bottom](screenshots/bst_bottom.png)
+
+> Features: Insert Node, Delete Node, Reset Tree, Inorder (L→Root→R), Preorder (Root→L→R), Postorder (L→R→Root). Complexity: Search/Insert/Delete O(log n) avg
 
 ---
 
@@ -489,6 +640,9 @@ See [LICENSE](LICENSE) file for details.
 - **Animations**: [Framer Motion](https://www.framer.com/motion/)
 - **Charts**: [Recharts](https://recharts.org/)
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **Frontend Hosting**: [Vercel](https://vercel.com/)
+- **Backend Hosting**: [Railway](https://railway.app/)
+- **Database**: [PostgreSQL](https://www.postgresql.org/)
 
 ---
 
@@ -520,24 +674,12 @@ See [LICENSE](LICENSE) file for details.
 - Environment configuration
 - CORS and security basics
 
----
-
-## 📸 Screenshots
-
-*(Will be adding soon...)*
-
-1. **Profile Setup** — 3-step onboarding wizard
-2. **Learning Dashboard** — Personalized greeting and stats
-3. **Topic Explanation** — AI-generated content with reading time
-4. **Quiz Interface** — Timed questions with progress bar
-5. **Quiz Results** — Score visualization and review
-6. **Visualizer Selector** — 5 beautiful gradient buttons
-7. **Array Visualizer** — Memory addresses and animations
-8. **Stack Visualizer** — LIFO operations with highlighting
-9. **Queue Visualizer** — FIFO demonstration
-10. **Linked List Visualizer** — Pointer-based navigation
-11. **Binary Tree Visualizer** — Hierarchical structure with traversals
-12. **Analytics Dashboard** — Charts and performance insights
+### DevOps & Cloud Deployment
+- Frontend deployment on Vercel with CI/CD
+- Backend deployment on Railway
+- PostgreSQL production database setup
+- Environment variable management across dev/prod
+- Cross-origin resource sharing (CORS) configuration
 
 ---
 
@@ -547,6 +689,6 @@ If you find this project helpful, please consider giving it a star! ⭐
 
 ---
 
-**🚀 Built with passion as a learning journey — From concept to completion!**
+**🚀 Built with passion as a learning journey — From concept to deployment!**
 
-**💡 Perfect for portfolios, learning full-stack development, and understanding AI integration!**    
+**💡 Perfect for portfolios, learning full-stack development, and understanding AI integration!**
