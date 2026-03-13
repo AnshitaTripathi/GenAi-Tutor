@@ -12,7 +12,6 @@ from ..schemas.learning import (
     PracticeQuestionsResponse
 )
 from ..services.ai_service import ai_service
-from typing import Optional
 
 router = APIRouter(
     prefix="/api/learning",
@@ -35,16 +34,15 @@ async def get_greeting(request: GreetingRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+
 @router.post("/explain", response_model=TopicResponse)
 async def explain_topic(
     request: TopicRequest,
-    username: Optional[str] = None,     # Optional: save to DB if provided
     db: Session = Depends(get_db)
 ):
     """
-    Get AI explanation and optionally save to learning history.
-    
-    If username is provided, the session is saved to the database.
+    Get AI explanation and save to learning history.
+    Username is read from the request body so sessions are always saved.
     """
     try:
         result = await ai_service.explain_topic(
@@ -52,14 +50,15 @@ async def explain_topic(
             level=request.level,
             learning_style=request.learning_style
         )
-        
-        # Save to database if username provided
-        if username:
+
+        # ── FIX: username now comes from request body (not query param)
+        if request.username:
             user = db.query(User).filter(
-                User.username == username
+                User.username == request.username
             ).first()
-            
+
             if user:
+                # Save learning session to DB
                 session = LearningSession(
                     user_id=user.id,
                     topic=request.topic,
@@ -70,18 +69,19 @@ async def explain_topic(
                     estimated_reading_time=result["estimated_reading_time"]
                 )
                 db.add(session)
-                
-                # Update total sessions count
+
+                # Increment total_sessions on the profile
                 if user.profile:
                     current = int(user.profile.total_sessions or "0")
                     user.profile.total_sessions = str(current + 1)
-                
+
                 db.commit()
-        
+
         return TopicResponse(**result)
-    
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
 
 @router.post("/practice", response_model=PracticeQuestionsResponse)
 async def get_practice_questions(request: PracticeQuestionsRequest):
