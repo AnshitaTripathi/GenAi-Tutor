@@ -1,11 +1,12 @@
 from pydantic import BaseModel, Field
-from typing import Literal
+from typing import Literal, Optional
+
 
 class GreetingRequest(BaseModel):
     """Request to get a personalized greeting"""
     student_name: str = Field(..., min_length=1, max_length=100)
     level: Literal["beginner", "intermediate", "advanced"]
-    
+
     class Config:
         json_schema_extra = {
             "example": {
@@ -14,26 +15,31 @@ class GreetingRequest(BaseModel):
             }
         }
 
+
 class GreetingResponse(BaseModel):
     """Personalized greeting response"""
     greeting: str
     student_name: str
     level: str
 
+
 class TopicRequest(BaseModel):
     """Request to explain a topic"""
     topic: str = Field(..., min_length=1, max_length=200)
     level: Literal["beginner", "intermediate", "advanced"]
     learning_style: str = Field(default="visual")
-    
+    username: Optional[str] = None   # ← ADDED: so sessions get saved to DB
+
     class Config:
         json_schema_extra = {
             "example": {
                 "topic": "arrays",
                 "level": "beginner",
-                "learning_style": "visual"
+                "learning_style": "visual",
+                "username": "anshita"
             }
         }
+
 
 class TopicResponse(BaseModel):
     """Topic explanation response"""
@@ -44,11 +50,13 @@ class TopicResponse(BaseModel):
     estimated_reading_time: int
     model_used: str
 
+
 class PracticeQuestionsRequest(BaseModel):
     """Request for practice questions"""
     topic: str
     level: Literal["beginner", "intermediate", "advanced"]
     num_questions: int = Field(default=3, ge=1, le=5)
+
 
 class PracticeQuestionsResponse(BaseModel):
     """Practice questions response"""
