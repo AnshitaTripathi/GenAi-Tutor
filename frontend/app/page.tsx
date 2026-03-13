@@ -43,33 +43,61 @@ export default function Home() {
   const [quizResults, setQuizResults]         = useState<any>(null);
 
   useEffect(() => {
+    initUser();
+  }, []);
+
+  // ── On every page load:
+  //    1. Read username from localStorage (fast, no network)
+  //    2. Immediately fetch FRESH stats from the API so Sessions /
+  //       Topics Studied / recent_sessions are never stale
+  const initUser = async () => {
     try {
       const savedUser = localStorage.getItem('genai_tutor_user');
-      if (savedUser) {
-        const parsed = JSON.parse(savedUser);
+      if (!savedUser) { setLoading(false); return; }
 
-        // ── FIX: Only restore session if the saved data is complete.
-        //    If profile is missing/corrupt (e.g. from a failed refreshUserData
-        //    that stored undefined), wipe it and show ProfileSetup instead.
-        if (isValidUserData(parsed)) {
-          setUser(parsed);
-          generateGreeting(
-            parsed.user.username,
-            parsed.profile.proficiency_level
-          );
-        } else {
-          console.warn('Stored user data is incomplete — clearing and re-prompting setup.');
-          localStorage.removeItem('genai_tutor_user');
-        }
+      const parsed = JSON.parse(savedUser);
+
+      if (!isValidUserData(parsed)) {
+        console.warn('Stored user data is incomplete — clearing.');
+        localStorage.removeItem('genai_tutor_user');
+        setLoading(false);
+        return;
       }
+
+      // Show something immediately while we fetch fresh data
+      setUser(parsed);
+      generateGreeting(parsed.user.username, parsed.profile.proficiency_level);
+
+      // Now fetch up-to-date stats from backend
+      try {
+        const profileRes = await fetch(
+          `${API_URL}/api/profile/${parsed.user.username}`
+        );
+        if (profileRes.ok) {
+          const profileData = await profileRes.json();
+          if (profileData?.profile?.proficiency_level) {
+            const freshUser = {
+              user:                 parsed.user,
+              profile:              profileData.profile,
+              total_topics_studied: profileData.total_topics_studied ?? 0,
+              recent_sessions:      profileData.recent_sessions      ?? [],
+            };
+            localStorage.setItem('genai_tutor_user', JSON.stringify(freshUser));
+            setUser(freshUser);
+          }
+        }
+      } catch (fetchErr) {
+        // Network issue — keep showing cached data, don't crash
+        console.warn('Could not refresh profile on load:', fetchErr);
+      }
+
     } catch (err) {
-      // Corrupt JSON in localStorage — clear it
       console.error('Failed to parse stored user data:', err);
       localStorage.removeItem('genai_tutor_user');
     } finally {
       setLoading(false);
     }
-  }, []);
+  };
 
   const generateGreeting = async (name: string, level: string) => {
     try {
@@ -113,8 +141,8 @@ export default function Home() {
       const updatedUser = {
         user:                 user.user,
         profile:              profileData.profile,
-        total_topics_studied: profileData.total_topics_studied,
-        recent_sessions:      profileData.recent_sessions,
+        total_topics_studied: profileData.total_topics_studied ?? 0,
+        recent_sessions:      profileData.recent_sessions      ?? [],
       };
 
       localStorage.setItem('genai_tutor_user', JSON.stringify(updatedUser));
